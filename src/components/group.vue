@@ -5379,9 +5379,9 @@ export default {
       this.coim_trippur = [data.ahcgroup["Coimbatore + Tiruppur"]];
       this.coim_trippur_branches = data.branchwise["Coimbatore + Tiruppur"];
 	  
-      this.tuti_madurai = [data.ahcgroup["Tuticorin + Madurai"]];
+      this.tuti_madurai = [data.ahcgroup["Madurai Region"]];
       this.tuti_madurai_branches = data.branchwise[
-        "Tuticorin + Madurai"
+        "Madurai Region"
       ];
       this.trichy = data.branchwise["Trichy"];
       this.thanjavur = data.branchwise["Thanjavur"];

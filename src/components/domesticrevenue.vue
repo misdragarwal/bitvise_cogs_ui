@@ -1526,7 +1526,56 @@
                   >{{item.mtdachived}}</td>
                  
                 </tr>
-								
+								<tr
+                  scope="row"
+                  v-for="(item,index) in tirunelveli_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
 				<tr
                   scope="row"
                   v-for="(item,index) in coim_trippur"
@@ -3467,9 +3516,11 @@ export default {
     erod_hosure_branches: null,
     jaipur: null,
     madurai: null,
+    nagercoil: null,
     ahc_chennai: null,
     ahc_chennai_branches: null,
     tirunelveli: null,
+    tirunelveli_branches: null,
 	coim_trippur: null,
     coim_trippur_branches: null,	
     tuti_madurai: null,
@@ -3581,14 +3632,16 @@ export default {
       this.erod_hosure_branches = data.branchwise["Erode + Hosur"];
       this.jaipur = data.branchwise["Jaipur"];
       this.madurai = [data.aehgroup["Madurai KK Nagar"]];
+      this.nagercoil = [data.aehgroup["Nagercoil"]];
       this.ahc_chennai = [data.ahcgroup["Chennai branches"]];
       this.ahc_chennai_branches = data.branchwise["Chennai branches"];
       this.tirunelveli = data.branchwise["Tirunelveli"];
+      this.tirunelveli_branches = data.branchwise["Tirunelveli"];
       this.coim_trippur = [data.ahcgroup["Coimbatore + Tiruppur"]];
       this.coim_trippur_branches = data.branchwise["Coimbatore + Tiruppur"];	  
-      this.tuti_madurai = [data.ahcgroup["Tuticorin + Madurai"]];
+      this.tuti_madurai = [data.ahcgroup["Madurai Region"]];
       this.tuti_madurai_branches = data.branchwise[
-        "Tuticorin + Madurai"];
+        "Madurai Region"];
       this.trichy = data.branchwise["Trichy"];
       this.thanjavur = data.branchwise["Thanjavur"];
       this.andaman = [data.ahcgroup["Port Blair"]];
@@ -3656,6 +3709,7 @@ export default {
 			  this.ahc_chennai_branches,
 			  this.pondycherry,
 			  this.tirunelveli,
+        this.tirunelveli_branches,
 			  this.coim_trippur,
 			  this.coim_trippur_branches,		  
 			  this.tuti_madurai,

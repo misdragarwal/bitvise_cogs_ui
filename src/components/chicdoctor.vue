@@ -1,181 +1,209 @@
 <template>
-<v-container fluid fill-height class="grey lighten-3">
-  <v-slide-y-transition mode="out-in">
-    <v-layout row wrap>
-      <v-flex xs12 sm10 offset-sm1 md10 offest-md1 lg10 offset-lg1>
-        <v-toolbar flat color="grey lighten-2">
+  <v-container fluid fill-height class="grey lighten-3">
+    <v-slide-y-transition mode="out-in">
+      <v-layout row wrap>
+        <v-flex xs12 sm10 offset-sm1 md10 offest-md1 lg10 offset-lg1>
+          <v-toolbar flat color="grey lighten-2">
 
-          <v-spacer></v-spacer>
-
-          <v-select :items="currentstatus" v-model="Setstatus" label="Status Type" item-text="shortCode" item-value="text"></v-select>
-          <v-btn rounded color="primary" dark @click="apiRequesticdoctorlist(fromdate,todate,SetVisit,SetBranch,Setdrttype)">Generate</v-btn>
-
-
-        </v-toolbar>
-        <loading :active.sync="isLoading" :is-full-page="fullPage" color="#7f0000" loader="bars"></loading>
-        <!-- Vuetify Data table -->
-
-        <template>
-          <v-card-title>
-            <v-toolbar-title>IC Doctor list</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="primary" dark @click.stop="newdoctor = true">
-              New Doctor Reference
+
+            <v-select :items="currentstatus" v-model="Setstatus" label="Status Type" item-text="shortCode"
+              item-value="text"></v-select>
+            <v-btn rounded color="primary" dark
+              @click="apiRequesticdoctorlist(fromdate, todate, SetVisit, SetBranch, Setdrttype)">Generate</v-btn>
+
+
+          </v-toolbar>
+          <loading :active.sync="isLoading" :is-full-page="fullPage" color="#7f0000" loader="bars"></loading>
+          <!-- Vuetify Data table -->
+
+          <template>
+            <v-card-title>
+              <v-toolbar-title>IC Doctor list</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" dark @click.stop="newdoctor = true">
+                New Doctor Reference
+              </v-btn>
+
+              <v-layout row justify-center>
+                <v-dialog v-model="newdoctor" persistent max-width="800px" lazy absolute>
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Information</span>
+
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container grid-list-md>
+                        <v-layout wrap>
+                          <v-flex xs12 sm6 md3>
+                            <v-select :items="ref_type" v-model="refType" label="Ref type" id="SelType"
+                              item-text="shortCode" item-value="text"></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field type='text' clearable v-model="refdoctor" label="Ref Doctor" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-select :items="paymententities" v-model="Setpayment" label="Payment type" id="SelEntity"
+                              item-text="shortCode" item-value="text"></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 md3>
+                            <v-text-field type='text' clearable v-model="refinfavourdoctor" label="In favour of"
+                              required></v-text-field>
+                          </v-flex>
+
+                          <v-flex xs12 sm6 md4>
+                            <v-select :items="branch" v-model="refdocbranch" label="Branch:" item-text="shortCode"
+                              item-value="text" id="SelBranch" />
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type="text" clearable v-model="refdoccontact" label="Contact No" @change=''
+                              required></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field v-model="refdocemail" :rules="emailRules" label="E-mail" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type='text' clearable v-model="refdocpan" @change="Panrules(b)" label="Pan No"
+                              required></v-text-field>
+                            <small>*If no Pan please enter NA</small>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type='text' clearable v-model="refdocgstin" label="GSTIN No" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type='text' clearable v-model="refdocagreed" label="Agreed %" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type='text' clearable v-model="refdocacc" label="Bank Account No" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type='text' clearable v-model="refdocaccifsc" label="Bank IFSC" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm6 md4>
+                            <v-text-field type='text' clearable v-model="refdocaccbank" label="Bank Name" required>
+                            </v-text-field>
+                          </v-flex>
+
+
+                          <v-flex xs12 sm6 md4>
+                            <label>Agreement file
+                            </label>
+                            <input type="file" ref="agreementupload"
+                              accept="image/x-png, image/gif, image/jpeg,application/pdf"
+                              v-on:change="handleFileUploadagreement()" />
+
+                          </v-flex>
+
+                          <v-flex xs12 sm6 md4>
+                            <label>Pan Upload
+                            </label>
+                            <input type="file" ref="panupload"
+                              accept="image/x-png, image/gif, image/jpeg,application/pdf"
+                              v-on:change="handleFileUploadpan()" />
+
+                          </v-flex>
+
+                          <v-flex xs12 sm6 md4>
+                            <label>Passbook Upload
+                            </label>
+                            <input type="file" ref="passbookupload"
+                              accept="image/x-png, image/gif, image/jpeg,application/pdf"
+                              v-on:change="handleFileUploadpassbook()" />
+
+                          </v-flex>
+
+
+                        </v-layout>
+                      </v-container>
+                      <small>*indicates required field</small>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" flat @click="newdoctor = false">Close</v-btn>
+                      <v-btn color="blue darken-1" flat
+                        @click="apiinsertrefdoc(refType,refdoctor, refinfavourdoctor, refdocbranch, refdoccontact, refdocemail, refdocpan, refdocgstin, refdocagreed, refdocacc, refdocaccifsc, refdocaccbank)">
+                        Submit</v-btn>
+
+                    </v-card-actions>
+                  </v-card>
+
+
+
+                </v-dialog>
+              </v-layout>
+
+
+              <v-spacer></v-spacer>
+              <v-text-field v-model="search" v-if="doctorlist" append-icon="mdi-magnify" label="Search" single-line
+                hide-details></v-text-field>
+            </v-card-title>
+
+            <v-data-table :headers="headers" :items="doctorlist" v-model="selected" :search="search"
+              class="elevation-1">
+              <template slot="items" slot-scope="props">
+                <tr @click="rowClick(props.item)">
+                  <td>{{ props.item.Active_status }}</td>
+                  <td class="text-xs-left">{{ props.item.Comments }}</td>
+                  <td class="text-xs-left">{{ props.item.Branch }}</td>
+                  <td class="text-xs-left">{{ props.item.Name }}</td>
+                  <td class="text-xs-left">{{ props.item.Infavour_of }}</td>
+                  <td class="text-xs-left">{{ props.item.Percentage }}</td>
+                  <td class="text-xs-left">{{ props.item.Pan_no }}</td>
+                  <td class="text-xs-left">{{ props.item.Bank_name }}</td>
+                  <td class="text-xs-left">{{ props.item.Account_no }}</td>
+                  <td class="text-xs-left">{{ props.item.Bank_ifsc }}</td>
+                  <td class="text-xs-left">{{ props.item.Payment_type }}</td>
+                  <!-- <td class="text-xs-left">{{props.item.Agreement}}</td> -->
+
+                  <td class="text-xs-right" v-if="!(props.item.Agreement_d === 'NA')">
+                    <v-btn slot="activator" small fab color="primary"
+                      @click="downloadagreement(props.item.Agreement_d)">
+                      <v-icon>cloud_download</v-icon>
+                    </v-btn>
+
+                  </td>
+                  <td class="text-xs-right" v-if="!(props.item.Pan_d === 'NA')">
+                    <v-btn slot="activator" small fab color="primary" @click="downloadpan(props.item.Pan_d)">
+                      <v-icon>cloud_download</v-icon>
+                    </v-btn>
+
+                  </td>
+                  <td class="text-xs-right" v-if="!(props.item.Passbook_d === 'NA')">
+                    <v-btn slot="activator" small fab color="primary" @click="downloadpassbook(props.item.Passbook_d)">
+                      <v-icon>cloud_download</v-icon>
+                    </v-btn>
+
+                  </td>
+
+                </tr>
+              </template>
+            </v-data-table>
+
+          </template>
+
+
+
+
+
+
+
+          <back-to-top bottom="90px" right="90px">
+            <v-btn class="red darken-4" dark absolute fab small>
+              <v-icon>expand_less</v-icon>
             </v-btn>
+          </back-to-top>
+          <!-- end Data Tabel -->
 
-            <v-layout row justify-center>
-              <v-dialog v-model="newdoctor" persistent max-width="800px" lazy absolute>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Information</span>
-
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container grid-list-md>
-                      <v-layout wrap>
-
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdoctor" label="Ref Doctor" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-select :items="paymententities" v-model="Setpayment" label="Payment type" id="SelEntity" item-text="shortCode" item-value="text"></v-select>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refinfavourdoctor" label="In favour of" required></v-text-field>
-                        </v-flex>
-
-                        <v-flex xs12 sm6 md4>
-                          <v-select :items="branch" v-model="refdocbranch" label="Branch:" item-text="shortCode" item-value="text" id="SelBranch" />
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type="text" clearable v-model="refdoccontact" label="Contact No" @change='' required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field v-model="refdocemail" :rules="emailRules" label="E-mail" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdocpan" @change="Panrules(b)" label="Pan No" required></v-text-field>
-                          <small>*If no Pan please enter NA</small>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdocgstin" label="GSTIN No" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdocagreed" label="Agreed %" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdocacc" label="Bank Account No" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdocaccifsc" label="Bank IFSC" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field type='text' clearable v-model="refdocaccbank" label="Bank Name" required></v-text-field>
-                        </v-flex>
-
-
-                        <v-flex xs12 sm6 md4>
-                          <label>Agreement file
-                          </label>
-                          <input type="file" ref="agreementupload" accept="image/x-png, image/gif, image/jpeg,application/pdf" v-on:change="handleFileUploadagreement()" />
-
-                        </v-flex>
-
-                        <v-flex xs12 sm6 md4>
-                          <label>Pan Upload
-                          </label>
-                          <input type="file" ref="panupload" accept="image/x-png, image/gif, image/jpeg,application/pdf" v-on:change="handleFileUploadpan()" />
-
-                        </v-flex>
-
-                        <v-flex xs12 sm6 md4>
-                          <label>Passbook Upload
-                          </label>
-                          <input type="file" ref="passbookupload" accept="image/x-png, image/gif, image/jpeg,application/pdf" v-on:change="handleFileUploadpassbook()" />
-
-                        </v-flex>
-
-
-                      </v-layout>
-                    </v-container>
-                    <small>*indicates required field</small>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="newdoctor = false">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click="apiinsertrefdoc(refdoctor,refinfavourdoctor,refdocbranch,refdoccontact,refdocemail,refdocpan,refdocgstin,refdocagreed,refdocacc,refdocaccifsc,refdocaccbank)">Submit</v-btn>
-
-                  </v-card-actions>
-                </v-card>
-
-
-
-              </v-dialog>
-            </v-layout>
-
-
-            <v-spacer></v-spacer>
-            <v-text-field v-model="search" v-if="doctorlist" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
-          </v-card-title>
-
-          <v-data-table :headers="headers" :items="doctorlist" v-model="selected" :search="search" class="elevation-1">
-            <template slot="items" slot-scope="props">
-              <tr @click="rowClick(props.item)">
-                <td>{{ props.item.Active_status}}</td>
-                <td class="text-xs-left">{{ props.item.Comments }}</td>
-                <td class="text-xs-left">{{ props.item.Branch }}</td>
-                <td class="text-xs-left">{{ props.item.Name }}</td>
-                <td class="text-xs-left">{{ props.item.Infavour_of }}</td>
-                <td class="text-xs-left">{{ props.item.Percentage }}</td>
-                <td class="text-xs-left">{{ props.item.Pan_no }}</td>
-                <td class="text-xs-left">{{ props.item.Bank_name }}</td>
-                <td class="text-xs-left">{{ props.item.Account_no }}</td>
-                <td class="text-xs-left">{{ props.item.Bank_ifsc }}</td>
-                <td class="text-xs-left">{{ props.item.Payment_type }}</td>
-                <!-- <td class="text-xs-left">{{props.item.Agreement}}</td> -->
-
-                <td class="text-xs-right" v-if="!(props.item.Agreement_d==='NA')">
-                  <v-btn slot="activator" small fab color="primary" @click="downloadagreement(props.item.Agreement_d)">
-                    <v-icon>cloud_download</v-icon>
-                  </v-btn>
-
-                </td>
-                <td class="text-xs-right" v-if="!(props.item.Pan_d==='NA')">
-                  <v-btn slot="activator" small fab color="primary" @click="downloadpan(props.item.Pan_d)">
-                    <v-icon>cloud_download</v-icon>
-                  </v-btn>
-
-                </td>
-                <td class="text-xs-right" v-if="!(props.item.Passbook_d==='NA')">
-                  <v-btn slot="activator" small fab color="primary" @click="downloadpassbook(props.item.Passbook_d)">
-                    <v-icon>cloud_download</v-icon>
-                  </v-btn>
-
-                </td>
-
-              </tr>
-</template>
-</v-data-table>
-
-</template>
-
-
-
-
-
-
-
-<back-to-top bottom="90px" right="90px">
-  <v-btn class="red darken-4" dark absolute fab small>
-    <v-icon>expand_less</v-icon>
-  </v-btn>
-</back-to-top>
-<!-- end Data Tabel -->
-
-</v-flex>
-</v-layout>
-</v-slide-y-transition>
-</v-container>
+        </v-flex>
+      </v-layout>
+    </v-slide-y-transition>
+  </v-container>
 </template>
 
 
@@ -188,107 +216,126 @@ import {
 export default {
   data: () => ({
     currentstatus: [{
-        shortCode: "Select All",
-        text: "All"
-      },
-      {
-        shortCode: "Pending",
-        text: "-1",
-      },
-      {
-        shortCode: "Approved",
-        text: "1",
-      },
-      {
-        shortCode: "Cancelled",
-        text: "-2",
-      },
+      shortCode: "Select All",
+      text: "All"
+    },
+    {
+      shortCode: "Pending",
+      text: "-1",
+    },
+    {
+      shortCode: "Approved",
+      text: "1",
+    },
+    {
+      shortCode: "Cancelled",
+      text: "-2",
+    },
     ],
     headers: [{
-        text: 'Status',
-        align: 'left',
-        sortable: false,
-        value: 'Status'
+      text: 'Status',
+      align: 'left',
+      sortable: false,
+      value: 'Status'
 
-      },
-      {
-        text: 'Finance Comments',
-        align: 'left',
-        sortable: true,
-        value: 'Comments'
-      },
-      {
-        text: 'Branch',
-        value: 'Branch'
-      },
-      {
-        text: 'Name',
-        value: 'Name'
-      },
-      {
-        text: 'Infavour of',
-        value: 'Infavour_of'
-      },
-      {
-        text: 'Agreed %',
-        value: 'Percentage'
-      },
-      {
-        text: 'Pan no',
-        value: 'Pan_no'
-      },
-      {
-        text: 'Bank Name',
-        value: 'Bank_name'
-      },
-      {
-        text: 'Account no',
-        value: 'Account_no'
-      },
-      {
-        text: 'Bank IFSC',
-        value: 'Bank_ifsc'
-      },
-      {
-        text: 'Payment type',
-        value: 'Payment_type'
-      },
-      {
-        text: 'Agreement',
-        value: 'Agreement_url'
-      },
-      {
-        text: 'Pan',
-        value: 'Pan_url'
-      },
-      {
-        text: 'Passbook',
-        value: 'Passbook_url'
-      }
+    },
+    {
+      text: 'Finance Comments',
+      align: 'left',
+      sortable: true,
+      value: 'Comments'
+    },
+    {
+      text: 'Branch',
+      value: 'Branch'
+    },
+    {
+      text: 'Name',
+      value: 'Name'
+    },
+    {
+      text: 'Infavour of',
+      value: 'Infavour_of'
+    },
+    {
+      text: 'Agreed %',
+      value: 'Percentage'
+    },
+    {
+      text: 'Pan no',
+      value: 'Pan_no'
+    },
+    {
+      text: 'Bank Name',
+      value: 'Bank_name'
+    },
+    {
+      text: 'Account no',
+      value: 'Account_no'
+    },
+    {
+      text: 'Bank IFSC',
+      value: 'Bank_ifsc'
+    },
+    {
+      text: 'Payment type',
+      value: 'Payment_type'
+    },
+    {
+      text: 'Agreement',
+      value: 'Agreement_url'
+    },
+    {
+      text: 'Pan',
+      value: 'Pan_url'
+    },
+    {
+      text: 'Passbook',
+      value: 'Passbook_url'
+    }
     ],
     paymententities: [{
-        shortCode: 'Cash',
-        text: 'Cash'
+      shortCode: 'Cash',
+      text: 'Cash'
+    },
+    {
+      shortCode: 'Card',
+      text: 'Card'
+    },
+    {
+      shortCode: 'Cheque',
+      text: 'Cheque'
+    },
+    {
+      shortCode: 'DD',
+      text: 'DD'
+    },
+    {
+      shortCode: 'Fund Transfer',
+      text: 'Fund Transfer'
+    },
+    {
+      shortCode: 'Paytm',
+      text: 'paytm'
+    },
+    ],
+    ref_type: [
+      {
+        shortCode: 'Doctor',
+        text: 'DOC'
       },
       {
-        shortCode: 'Card',
-        text: 'Card'
+        shortCode: 'Optical',
+        text: 'OPT'
       },
       {
-        shortCode: 'Cheque',
-        text: 'Cheque'
+        shortCode: 'Pharmacy',
+        text: 'PHR'
       },
+
       {
-        shortCode: 'DD',
-        text: 'DD'
-      },
-      {
-        shortCode: 'Fund Transfer',
-        text: 'Fund Transfer'
-      },
-      {
-        shortCode: 'Paytm',
-        text: 'paytm'
+        shortCode: 'Other',
+        text: 'OTH'
       },
     ],
     isLoading: false,
@@ -298,6 +345,7 @@ export default {
     search: '',
     selected: [],
     newdoctor: false,
+    refType:'',
     refdoctor: '',
     refinfavourdoctor: '',
     refdocbranch: '',
@@ -312,11 +360,12 @@ export default {
     agreementupload: '',
     panupload: '',
     passbookupload: '',
+    Setpayment:'',
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid',
     ],
-
+    Setstatus:'',
 
   }),
   components: {
@@ -440,7 +489,8 @@ export default {
         console.log(this.filepassbookupload);
       }
     },
-    apiinsertrefdoc(refdoctor, refinfavourdoctor, Setpayment, refdocbranch, refdoccontact, refdocemail, refdocpan, refdocgstin, refdocagreed, refdocacc, refdocaccifsc, refdocaccbank) {
+    apiinsertrefdoc(refType,refdoctor, refinfavourdoctor, Setpayment, refdocbranch, refdoccontact, refdocemail, refdocpan, refdocgstin, refdocagreed, refdocacc, refdocaccifsc, refdocaccbank) {
+      let ref_type='';
       let ref_doctor = '';
       let ref_docbranch = '';
       let ref_doccontact = '';
@@ -460,7 +510,8 @@ export default {
 
       let normalusername = JSON.parse(sessionStorage.getItem("normal_user"));
 
-
+      
+      formData.append("doctortype", this.refType);
       formData.append("doctorname", this.refdoctor);
       formData.append("docfavourname", this.refinfavourdoctor);
       formData.append("docpaymenttype", this.Setpayment);
@@ -483,7 +534,7 @@ export default {
       console.log(Array.from(formData));
 
       console.log("---------------------------------------------------");
-
+      console.log("doctortype : " + this.refType);
       console.log("doctname : " + this.refdoctor);
       console.log("infavour : " + this.refinfavourdoctor);
       console.log("paymennt : " + this.Setpayment);
@@ -504,6 +555,10 @@ export default {
       console.log(this.filepanupload);
       console.log(this.filepassbookupload);
 
+      if ((this.refType == null) || (this.refType == '')) {
+        alert("please enter DRT type")
+        return false;
+      }
       if ((this.refdoctor == null) || (this.refdoctor == '')) {
         alert("please enter Doctor name")
         return false;
@@ -542,11 +597,10 @@ export default {
         alert("please enter Agreed Percentage")
         return false;
       }
-
       this.loading = true;
       this.isLoading = true;
-
-      this.$http.post('https://mis.dragarwal.com/api-uploaddoctor', formData, {}).then(res => {
+   
+      this.$http.post(`${process.env.API_URL}/api-uploaddoctor`, formData, {}).then(res => {
         this.isLoading = false;
 
 
@@ -566,8 +620,8 @@ export default {
           this.Setpayment = null;
           formData = null;
           this.newdoctor = false;
-          this.$refs.agreementupload.files[0]=null;
-          this.$refs.agreementupload.files[0]='';
+          this.$refs.agreementupload.files[0] = null;
+          this.$refs.agreementupload.files[0] = '';
           console.log(formData);
         } else {
 

@@ -318,6 +318,7 @@ export default {
       },
 	  handleFileUploadVoucher(){
 		this.fileVoucher = this.$refs.voucherupload.files[0];	
+    console.log(		this.fileVoucher );
 		if ((this.fileVoucher.size > 1000000)) {		    
 			 //alert("Voucher file is greater than 1MB");
 			 return false;
@@ -326,6 +327,7 @@ export default {
 	  },
 	  handleFileUploadBill(){
 		this.fileBill = this.$refs.billupload.files[0];	
+    console.log(this.fileBill);
 		if ((this.fileBill.size > 1000000)) {		    
 			 //alert("Bill file is greater than 1MB");
 			 return false;

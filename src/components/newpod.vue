@@ -5703,9 +5703,9 @@ export default {
       this.tirunelveli = data.branchwise["Tirunelveli"];
 	  this.coimbatore = data.branchwise["Coimbatore"];
 	  
-      this.tuti_madurai = [data.ahcgroup["Tuticorin + Madurai"]];
+      this.tuti_madurai = [data.ahcgroup["Madurai Region"]];
       this.tuti_madurai_branches = data.branchwise[
-        "Tuticorin + Madurai"
+        "Madurai Region"
       ].concat(data.branchwise["Madurai KK Nagar"]);
       // this.trichy = [data.ahcgroup["Trichy"]];
       this.trichy = data.branchwise["Trichy"];

@@ -135,6 +135,10 @@ export default{
         shortCode: 'OHC',
         text: 'OHC'
       },
+      {
+        shortCode: 'PM-AEH',
+        text: 'PM-AEH'
+      },
     ],
 	regions : [
         { shortCode: 'Select All', text: ''},

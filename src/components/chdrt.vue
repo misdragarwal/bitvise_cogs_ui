@@ -1,208 +1,227 @@
 <template>
-<v-container fluid fill-height class="grey lighten-3">
-  <v-slide-y-transition mode="out-in">
-    <v-layout row wrap>
-      <v-flex xs12 sm10 offset-sm1 md10 offest-md1 lg10 offset-lg1>
-        <v-toolbar flat color="grey lighten-2">
+  <v-container fluid fill-height class="grey lighten-3">
+    <v-slide-y-transition mode="out-in">
+      <v-layout row wrap>
+        <v-flex xs12 sm10 offset-sm1 md10 offest-md1 lg10 offset-lg1>
+          <v-toolbar flat color="grey lighten-2">
 
-          <v-spacer></v-spacer>
-          <th width="10%">
-            <v-select :items="entities" v-model="SetVisit" label="Visit Type" id="SelEntity" item-text="shortCode" item-value="text"></v-select>
-          </th>
-          <v-spacer></v-spacer>
-          <th width="10%">
-            <v-select :items="branch" v-model="SetBranch" label="Branch:" item-text="shortCode" item-value="text" id="SelBranch"></v-select>
-          </th>
-          <v-spacer></v-spacer>
-          <th width="20%">
-            <v-select :items="drttype" v-model="Setdrttype" label="Drt Type" id="SelDrttype" item-text="shortCode" item-value="text"></v-select>
-          </th>
-          <v-spacer></v-spacer>
-
-
-          <v-menu absolute ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" :return-value.sync="fromdate" lazy transition="scale-transition" offset-y full-width min-width="150px">
-            <v-text-field slot="activator" v-model="fromdate" placeholder="Select From Date" prepend-inner-icon="event" readonly></v-text-field>
-            <v-date-picker color="primary" v-model="fromdate" no-title scrollable :min="minDate" :max="maxDate" backgroundRevenue-color="red" style="box-shadow:none">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu1 = false" style="outline:none">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu1.save(fromdate)" style="outline:none">Ok</v-btn>
-            </v-date-picker>
-          </v-menu>
-
-          <v-spacer></v-spacer>
-          <v-menu absolute ref="menu2" :close-on-content-click="false" v-model="menu2" :nudge-right="40" :return-value.sync="todate" lazy transition="scale-transition" offset-y full-width min-width="150px">
-            <v-text-field slot="activator" v-model="todate" placeholder="Select To Date" prepend-inner-icon="event" readonly></v-text-field>
-            <v-date-picker color="primary" v-model="todate" no-title scrollable :min="minDate" :max="maxDate" backgroundRevenue-color="red" style="box-shadow:none">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu2 = false" style="outline:none">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu2.save(todate)" style="outline:none">Ok</v-btn>
-            </v-date-picker>
-          </v-menu>
-
-          <v-btn rounded color="primary" dark @click="apiRequestdrtbill(fromdate,todate,SetVisit,SetBranch,Setdrttype)">Generate</v-btn>
-
-        </v-toolbar>
-        <loading :active.sync="isLoading" :is-full-page="fullPage" color="#7f0000" loader="bars"></loading>
-        <!-- Vuetify Data table -->
-
-        <template>
-          <v-card-title>
-            <v-toolbar-title>IC claim</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="primary" dark @click="billreference()">
-              Submitted Bills
-            </v-btn>
-
-            <v-btn color="primary" dark @click="doctorreference()">
-              View Doctor Reference
-            </v-btn>
+            <th width="10%">
+              <v-select :items="entities" v-model="SetVisit" label="Visit Type" id="SelEntity" item-text="shortCode"
+                item-value="text"></v-select>
+            </th>
             <v-spacer></v-spacer>
-            <v-text-field v-model="search" v-if="billdata" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
-          </v-card-title>
-
-          <v-data-table :headers="headers" :items="billdata" v-model="selected" :search="search" class="elevation-1">
-            <template slot="items" slot-scope="props">
-              <tr @click="rowClick(props.item)">
-                <td>{{ props.item.BILLED }}</td>
-                <td class="text-xs-left" style="white-space: nowrap;">{{ props.item.TRANSACTION_DATE }}</td>
-                <td class="text-xs-left">{{ props.item.BILLNO }}</td>
-                <td class="text-xs-left">{{ props.item.MRN }}</td>
-                <td class="text-xs-left">{{ props.item.PATIENT_NAME }}</td>
-                <td class="text-xs-left">{{ numberformat(props.item.Bill_TOTAL_AMOUNT) }}</td>
-                <td class="text-xs-left">{{props.item.status}}</td>
-                <td class="text-xs-right">
-
-                  <v-layout row justify-center>
-                    <v-dialog v-model="dialog" persistent max-width="800px" lazy absolute>
-                      <v-btn slot="activator" small fab color="success" @click="rowClick1(props.item)">
-                        <v-icon>edit</v-icon>
-                      </v-btn>
-
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline">Information</span>
-
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container grid-list-md>
-                            <v-layout wrap>
-                              <v-flex xs12 sm6 md4>
-
-                <td class="text-xs-left">Mrn : {{ Mrn }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Name : {{ Name }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Visited date : {{ vdate }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Ref Type : {{ reftype }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Ref Sub : {{ refsub }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Ref By : {{ refby }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Bill No : {{ Billno }}</td>
-
-      </v-flex>
-      <v-flex xs12 sm6>
-        <td class="text-xs-left">Bill Date : {{ vdate }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Bill Amount : {{ billamount}}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Discount Amount : {{ discount }}</td>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <td class="text-xs-left">Net Amount : {{ netamount }}</td>
-      </v-flex>
-      <v-flex xs12>
-        <div class="table-responsive">
-          <table align="center" class="table table-hover table-bordered" v-if="show">
-            <thead>
-              <tr>
-                <th class="text-left">Service/Item</th>
-                <th class="text-left">QTY</th>
-                <th class="text-left">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in drtbilldetail" :key="item.name">
-                <td>{{ item.ITEMNAME }}</td>
-                <td>{{ item.QUANTITY }}</td>
-                <td>{{ item.NET_AMOUNT }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-autocomplete clearable autocomplete='off' default="" v-model="memberSelected" :items="drt" label="Select DRT" required item-text="Name" item-value="ID" v-on:change='getDRTdetail'></v-autocomplete>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-autocomplete clearable :items="category" label="Category" required item-text="shortCode" item-value="text" v-on:change='getDRTcategory'></v-autocomplete>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-text-field v-model="infavourof" clearable label="Infavour of" disabled></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-text-field v-model="drtcusname" v-if='drtcusid' clearable label="Selected DRT" disabled></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-text-field v-if='drtcusid' disabled v-model="drtcat" label="Selected Category" required></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-text-field v-model="paymenttype" clearable label="Payment type" disabled></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-text-field v-model="panno" clearable label="Pan No" disabled></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
-        <v-text-field type='number' disabled v-model="aggcommission" label="Agreed %" required></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-text-field type="text" clearable v-model="drtcommission" label="DRT %" @change="drtcommissionvalue" required></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-text-field type="text" clearable v-model="drtamount" label="Amount" @change="drtamountvalue" required></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-textarea clearable clear-icon="cancel" label="Comments" v-model='drtcomments'></v-textarea>
-      </v-flex>
-      <v-flex xs12 sm6 >
-        <v-text-field v-model="detail" clearable label="Bank detail"  disabled></v-text-field>
-      </v-flex>
-	   <v-flex xs12 sm6 md4>
-		  <label>Referal slip
-		  </label>
-		  <input type="file" ref="referalslip" accept="image/x-png, image/gif, image/jpeg,application/pdf" v-on:change="handleFileUploadslip()" />
-
-		</v-flex>
-
-    </v-layout>
-</v-container>
-<small>*indicates required field</small>
-</v-card-text>
-<v-card-actions>
-  <v-spacer></v-spacer>
-  <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-  <v-btn color="blue darken-1" v-model='buttonstatus' v-if="approval" flat @click="apiinsertbill(billid,netamount,aggcommission,drtcommission,drtamount,drtid,drtcategory,drtcomments,buttonstatus)">Submit</v-btn>
-
-</v-card-actions>
-</v-card>
+            <th width="10%">
+              <v-select :items="branch" v-model="SetBranch" label="Branch:" item-text="shortCode" item-value="text"
+                id="SelBranch"></v-select>
+            </th>
+            <v-spacer></v-spacer>
+            <th width="20%">
+              <v-select :items="drttype" v-model="Setdrttype" label="Drt Type" id="SelDrttype" item-text="shortCode"
+                item-value="text"></v-select>
+            </th>
+            <v-spacer></v-spacer>
 
 
+            <v-menu absolute ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"
+              :return-value.sync="fromdate" lazy transition="scale-transition" offset-y full-width min-width="150px">
+              <v-text-field slot="activator" v-model="fromdate" placeholder="Select From Date"
+                prepend-inner-icon="event" readonly></v-text-field>
+              <v-date-picker color="primary" v-model="fromdate" no-title scrollable :min="minDate" :max="maxDate"
+                backgroundRevenue-color="red" style="box-shadow:none">
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="menu1 = false" style="outline:none">Cancel</v-btn>
+                <v-btn flat color="primary" @click="$refs.menu1.save(fromdate)" style="outline:none">Ok</v-btn>
+              </v-date-picker>
+            </v-menu>
 
-</v-dialog>
-</v-layout>
+            <v-spacer></v-spacer>
+            <v-menu absolute ref="menu2" :close-on-content-click="false" v-model="menu2" :nudge-right="40"
+              :return-value.sync="todate" lazy transition="scale-transition" offset-y full-width min-width="150px">
+              <v-text-field slot="activator" v-model="todate" placeholder="Select To Date" prepend-inner-icon="event"
+                readonly></v-text-field>
+              <v-date-picker color="primary" v-model="todate" no-title scrollable :min="minDate" :max="maxDate"
+                backgroundRevenue-color="red" style="box-shadow:none">
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="menu2 = false" style="outline:none">Cancel</v-btn>
+                <v-btn flat color="primary" @click="$refs.menu2.save(todate)" style="outline:none">Ok</v-btn>
+              </v-date-picker>
+            </v-menu>
 
-</td>
-</tr>
+            <v-btn rounded color="primary" dark
+              @click="apiRequestdrtbill(fromdate, todate, SetVisit, SetBranch, Setdrttype)">Generate</v-btn>
+
+          </v-toolbar>
+          <loading :active.sync="isLoading" :is-full-page="fullPage" color="#7f0000" loader="bars"></loading>
+          <!-- Vuetify Data table -->
+
+          <template>
+            <v-card-title>
+              <v-toolbar-title>IC claim</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" dark @click="billreference()">
+                Submitted Bills
+              </v-btn>
+
+              <v-btn color="primary" dark @click="doctorreference()">
+                View Doctor Reference
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-text-field v-model="search" v-if="billdata" append-icon="mdi-magnify" label="Search" single-line
+                hide-details></v-text-field>
+            </v-card-title>
+
+            <v-data-table :headers="headers" :items="billdata" v-model="selected" :search="search" class="elevation-1">
+              <template slot="items" slot-scope="props">
+                <tr @click="rowClick(props.item)">
+                  <td>{{ props.item.BILLED }}</td>
+                  <td class="text-xs-left" style="white-space: nowrap;">{{ props.item.TRANSACTION_DATE }}</td>
+                  <td class="text-xs-left">{{ props.item.BILLNO }}</td>
+                  <td class="text-xs-left">{{ props.item.MRN }}</td>
+                  <td class="text-xs-left">{{ props.item.PATIENT_NAME }}</td>
+                  <td class="text-xs-left">{{ numberformat(props.item.Bill_TOTAL_AMOUNT) }}</td>
+                  <td class="text-xs-left">{{ props.item.status }}</td>
+                  <td class="text-xs-right">
+
+                    <v-layout row justify-center>
+                      <v-dialog v-model="dialog" persistent max-width="800px" lazy absolute>
+                        <v-btn slot="activator" small fab color="success" @click="rowClick1(props.item)">
+                          <v-icon>edit</v-icon>
+                        </v-btn>
+
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline">Information</span>
+
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container grid-list-md>
+                              <v-layout wrap>
+                                <v-flex xs12 sm6 md4>
+
+                  <td class="text-xs-left">Mrn : {{ Mrn }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Name : {{ Name }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Visited date : {{ vdate }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Ref Type : {{ reftype }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Ref Sub : {{ refsub }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Ref By : {{ refby }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Bill No : {{ Billno }}</td>
+
+        </v-flex>
+        <v-flex xs12 sm6>
+          <td class="text-xs-left">Bill Date : {{ vdate }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Bill Amount : {{ billamount }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Discount Amount : {{ discount }}</td>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <td class="text-xs-left">Net Amount : {{ netamount }}</td>
+        </v-flex>
+        <v-flex xs12>
+          <div class="table-responsive">
+            <table align="center" class="table table-hover table-bordered" v-if="show">
+              <thead>
+                <tr>
+                  <th class="text-left">Service/Item</th>
+                  <th class="text-left">QTY</th>
+                  <th class="text-left">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in drtbilldetail" :key="item.name">
+                  <td>{{ item.ITEMNAME }}</td>
+                  <td>{{ item.QUANTITY }}</td>
+                  <td>{{ item.NET_AMOUNT }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-autocomplete clearable autocomplete='off' default="" v-model="memberSelected" :items="drt"
+            label="DRT Name" required item-text="Name" item-value="ID" v-on:change='getDRTdetail'></v-autocomplete>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-autocomplete clearable :items="category" label="Category" required item-text="shortCode" item-value="text"
+            v-on:change='getDRTcategory'></v-autocomplete>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-text-field v-model="infavourof" clearable label="Infavour of" disabled></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="drtcusname" v-if='drtcusid' clearable label="Selected DRT" disabled></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-if='drtcusid' disabled v-model="drtcat" label="Selected Category" required></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-text-field v-model="paymenttype" clearable label="Payment type" disabled></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-text-field v-model="panno" clearable label="Pan No" disabled></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-text-field type='number' disabled v-model="aggcommission" label="Agreed %" required></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field type="text" clearable v-model="drtcommission" label="DRT %" @change="drtcommissionvalue"
+            required></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field type="text" clearable v-model="drtamount" label="Amount" @change="drtamountvalue" required>
+          </v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-textarea clearable clear-icon="cancel" label="Comments" v-model='drtcomments'></v-textarea>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="detail" clearable label="Bank detail" disabled></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <label>Referal slip
+          </label>
+          <input type="file" ref="referalslip" accept="image/x-png, image/gif, image/jpeg,application/pdf"
+            v-on:change="handleFileUploadslip($event)" />
+          <!-- <input type="file" @change="handleFileUpload( $event )"/> -->
+
+        </v-flex>
+
+      </v-layout>
+  </v-container>
+  <small>*indicates required field</small>
+  </v-card-text>
+  <v-card-actions>
+    <v-spacer></v-spacer>
+    <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+    <v-btn color="blue darken-1" v-model='buttonstatus' v-if="approval" flat
+      @click="apiinsertbill(billid, netamount, aggcommission, drtcommission, drtamount, drtid, drtcategory, drtcomments, buttonstatus, $event,selectDRTType)">
+      Submit</v-btn>
+
+  </v-card-actions>
+  </v-card>
+
+
+
+  </v-dialog>
+  </v-layout>
+
+  </td>
+  </tr>
 </template>
 </v-data-table>
 
@@ -236,7 +255,7 @@ import {
   serverBus
 } from "../main";
 
-var curday = function(sp) {
+var curday = function (sp) {
   var today = new Date();
   var dd = today.getDate() - 1;
   var mm = today.getMonth() + 1; //As January is 0.
@@ -247,7 +266,7 @@ var curday = function(sp) {
   return (yyyy + sp + mm + sp + dd);
 };
 
-var lastmonth = function(sp) {
+var lastmonth = function (sp) {
   var today = new Date();
   let dd = 1;
   var mm = today.getMonth(); //As January is 0.
@@ -322,122 +341,122 @@ export default {
     test: true,
     GSTIN: '',
     headers: [{
-        text: 'Branch',
-        align: 'left',
-        sortable: false,
-        value: 'BILLED'
+      text: 'Branch',
+      align: 'left',
+      sortable: false,
+      value: 'BILLED'
 
-      },
-      {
-        text: 'Date',
-        value: 'TRANSACTION_DATE'
-      },
-      {
-        text: 'Bill No',
-        value: 'BILLNO'
-      },
-      {
-        text: 'MRN',
-        value: 'MRN'
-      },
-      {
-        text: 'Name',
-        value: 'PATIENT_NAME'
-      },
-      {
-        text: 'Amount',
-        value: 'NET_AMOUNT'
-      },
-      {
-        text: 'Status',
-        value: 'Status'
-      },
-      {
-        text: 'Apply',
-        value: ''
-      }
+    },
+    {
+      text: 'Date',
+      value: 'TRANSACTION_DATE'
+    },
+    {
+      text: 'Bill No',
+      value: 'BILLNO'
+    },
+    {
+      text: 'MRN',
+      value: 'MRN'
+    },
+    {
+      text: 'Name',
+      value: 'PATIENT_NAME'
+    },
+    {
+      text: 'Amount',
+      value: 'NET_AMOUNT'
+    },
+    {
+      text: 'Status',
+      value: 'Status'
+    },
+    {
+      text: 'Apply',
+      value: ''
+    }
     ],
     category: [{
-        shortCode: 'GPC',
-        text: 'GPC'
-      },
-      {
-        shortCode: 'IPC',
-        text: 'IPC'
-      },
-      {
-        shortCode: 'DPC',
-        text: 'DPC'
-      },
-      {
-        shortCode: 'YPP',
-        text: 'YPP'
-      },
-      {
-        shortCode: 'IC',
-        text: 'IC'
-      }
+      shortCode: 'GPC',
+      text: 'GPC'
+    },
+    {
+      shortCode: 'IPC',
+      text: 'IPC'
+    },
+    {
+      shortCode: 'DPC',
+      text: 'DPC'
+    },
+    {
+      shortCode: 'YPP',
+      text: 'YPP'
+    },
+    {
+      shortCode: 'IC',
+      text: 'IC'
+    }
     ],
     message1: '',
     minDate: '',
     maxDate: curday('-'),
     entities: [{
-        shortCode: 'Select All',
-        text: 'All'
-      },
-      {
-        shortCode: 'OP',
-        text: 'OP'
-      },
-      {
-        shortCode: 'IP',
-        text: 'IP'
-      },
+      shortCode: 'Select All',
+      text: 'All'
+    },
+    {
+      shortCode: 'OP',
+      text: 'OP'
+    },
+    {
+      shortCode: 'IP',
+      text: 'IP'
+    },
 
     ],
     drttype: [{
-        shortCode: 'YPP',
-        text: 'YPP'
-      },
-      {
-        shortCode: 'DRT',
-        text: 'DRT'
-      },
-      {
-        shortCode: 'Others',
-        text: 'other'
-      }
+      shortCode: 'YPP',
+      text: 'YPP'
+    },
+    {
+      shortCode: 'DRT',
+      text: 'DRT'
+    },
+    {
+      shortCode: 'Others',
+      text: 'other'
+    }
     ],
     branch: [{
-        shortCode: 'Select All',
-        text: ''
-      }
+      shortCode: 'Select All',
+      text: ''
+    }
 
     ],
     paymententities: [{
-        shortCode: 'Cash',
-        text: 'Cash'
-      },
-      {
-        shortCode: 'Card',
-        text: 'Card'
-      },
-      {
-        shortCode: 'Cheque',
-        text: 'Cheque'
-      },
-      {
-        shortCode: 'DD',
-        text: 'DD'
-      },
-      {
-        shortCode: 'Fund Transfer',
-        text: 'Fund Transfer'
-      },
-      {
-        shortCode: 'Paytm',
-        text: 'paytm'
-      },
+      shortCode: 'Cash',
+      text: 'Cash'
+    },
+    {
+      shortCode: 'Card',
+      text: 'Card'
+    },
+    {
+      shortCode: 'Cheque',
+      text: 'Cheque'
+    },
+    {
+      shortCode: 'DD',
+      text: 'DD'
+    },
+    {
+      shortCode: 'Fund Transfer',
+      text: 'Fund Transfer'
+    },
+    {
+      shortCode: 'Paytm',
+      text: 'paytm'
+    },
     ],
 
     SetBranch: [],
@@ -532,9 +551,11 @@ export default {
     detail: '',
     fix_dte: '',
     ff_date: '',
-	mobile:'',
-	email:'',
-	fileslipupload:null
+    mobile: '',
+    email: '',
+    fileslipupload: null,
+    Images: null,
+    file: '',
   }),
   created() {
     this.getToday();
@@ -547,7 +568,7 @@ export default {
 
   },
   watch: {
-    dialog: function(val) {
+    dialog: function (val) {
       if (!val) {
         this.memberSelected = null;
 
@@ -564,15 +585,14 @@ export default {
       serverBus.$emit('changeComponent', 'chicdoctorlist')
     },
 
-
-    handleFileUploadslip() {
-      this.fileslipupload = this.$refs.referalslip.files[0];
+    handleFileUploadslip(event) {
+      this.fileslipupload = event.target.files[0];
       if (this.fileslipupload.size > 500000) {
         alert("Referal slip is greater than 500KB");
         this.fileslipupload = '';
-		this.$refs.referalslip.value=null;	  	  
+        event.target.files[0].value = null;
         console.log(this.fileslipupload);
-		return false;
+        return false;
       }
     },
     drtamountvalue(a) {
@@ -647,7 +667,7 @@ export default {
           this.drtcusname = this.drtbilldetail[0]["DRT_Name"];
           this.drtcat = this.drtbilldetail[0]["DRT_Category"];
           this.drtcusid = this.drtbilldetail[0]["DRT_Id"];
-		      this.mobile = this.drtbilldetail[0]["MOBILE"];
+          this.mobile = this.drtbilldetail[0]["MOBILE"];
           this.email = this.drtbilldetail[0]["EMAIL"];
           this.age = this.drtbilldetail[0]["AGE"];
           this.gender = this.drtbilldetail[0]["GENDER"];
@@ -686,15 +706,15 @@ export default {
           this.commission = this.drtdetail[0]["Percentage"]
           this.infavourof = this.drtdetail[0]["Infavour_of"]
           this.paymenttype = this.drtdetail[0]["Payment_type"]
-          this.Accountno=this.drtdetail[0]["Account_no"]
-          this.Bankifsc=this.drtdetail[0]["Bank_ifsc"]
-          this.Bankname=this.drtdetail[0]["Bank_name"]
+          this.Accountno = this.drtdetail[0]["Account_no"]
+          this.Bankifsc = this.drtdetail[0]["Bank_ifsc"]
+          this.Bankname = this.drtdetail[0]["Bank_name"]
           // console.log(this.commissions = this.drtdetail[0]["Percentage"]);
           this.drtname = this.drtdetail[0]["Name"]
-          console.log(this.Accountno +" "+this.Bankifsc+" "+this.Bankname);
-        //  this.detail=this.Bankname.concat(" || ",this.Bankifsc," || ",this.Accountno)
+          console.log(this.Accountno + " " + this.Bankifsc + " " + this.Bankname);
+          //  this.detail=this.Bankname.concat(" || ",this.Bankifsc," || ",this.Accountno)
           //concat(this.Bankname,"||",this.Bankifsc,"||",this.Accountno)
-          this.detail=this.Accountno +" || "+this.Bankifsc+" || "+this.Bankname;
+          this.detail = this.Accountno + " || " + this.Bankifsc + " || " + this.Bankname;
           console.log(this.detail);
         })
 
@@ -719,8 +739,8 @@ export default {
     loadfixdate() {
       let userid = JSON.parse(sessionStorage.getItem("normal_user"));
       //this.axios.get(`${process.env.API_URL}/api-getfixdate`).then(response => {
-		this.axios.get(`${process.env.API_URL}/api-getfixdate/${userid.name}`).then(response => {
-      console.log(response);
+      this.axios.get(`${process.env.API_URL}/api-getfixdate/${userid.name}`).then(response => {
+        console.log(response);
         this.fix_dte = response.data.fixeddate[0].fix_date;
         console.log(this.fix_dte);
         this.minDate = this.fix_dte;
@@ -905,7 +925,7 @@ export default {
       console.log("Mrn : " + this.Mrn);
       console.log("name : " + this.Name);
       console.log("reference : " + this.reftype);
-
+      console.log("this.fileslipupload ", this.fileslipupload);
       if (this.billid == '') {
         alert("please select DRT name");
         return false;
@@ -925,47 +945,40 @@ export default {
       } else if (!(this.drtamount <= this.netamount)) {
         alert("Enter amount is greater than Net amount")
         return false;
-      } 
-        else if ((this.drtcommission=='')||(this.drtcommission==null)||(this.drtamount=='')||(this.drtamount==null)){
-          alert("Please enter Drt Commission amount Or Drt Percentage")
-          return false;
-        }
-		
-	else if (!this.$refs.referalslip.files[0]) {
-	    
-        alert("Referal slip is required");          
+      }
+      else if ((this.drtcommission == '') || (this.drtcommission == null) || (this.drtamount == '') || (this.drtamount == null)) {
+        alert("Please enter Drt Commission amount Or Drt Percentage")
         return false;
-    }
-	
-      
-		
-		
-	
+      }
+      else if (!this.fileslipupload) {
+       alert("Referal slip is required");
+        return false;
+      }          
       else {
         let normalusername = JSON.parse(sessionStorage.getItem("normal_user"));
-		var formData = new FormData();
-		formData.append("bill_id", billid);
-		formData.append("net_amount", netamount);
-		formData.append("drt_aggcommission", aggcommission);
-		formData.append("drt_commission", drtcommission);
-		formData.append("drt_amount", drtamount);
-		formData.append("drt_id", drtid);
-		formData.append("drt_category", drtcategory);
-		formData.append("drt_user", normalusername.name);
-		formData.append("drt_comments", drtcomments);
-		formData.append("drt_billed", this.billedbranch);
-		formData.append("drt_billno", this.Billno);
-		formData.append("drt_billdate", this.drtbilldate);
-		formData.append("drt_name", this.Name);
-		formData.append("drt_mrn", this.Mrn);
-		formData.append("drt_ref", this.reftype);
-		formData.append("mobile", this.mobile);
-		formData.append("email", this.email);
-    formData.append("age", this.age);
-    formData.append("gender",this.gender);
-
-		formData.append("fileslipupload", this.fileslipupload);		
-        this.buttonstatus=false;
+        var formData = new FormData();
+        formData.append("bill_id", billid);
+        formData.append("net_amount", netamount);
+        formData.append("drt_aggcommission", aggcommission);
+        formData.append("drt_commission", drtcommission);
+        formData.append("drt_amount", drtamount);
+        formData.append("drt_id", drtid);
+        formData.append("drt_category", drtcategory);
+        formData.append("drt_user", normalusername.name);
+        formData.append("drt_comments", drtcomments);
+        formData.append("drt_billed", this.billedbranch);
+        formData.append("drt_billno", this.Billno);
+        formData.append("drt_billdate", this.drtbilldate);
+        formData.append("drt_name", this.Name);
+        formData.append("drt_mrn", this.Mrn);
+        formData.append("drt_ref", this.reftype);
+        formData.append("mobile", this.mobile);
+        formData.append("email", this.email);
+        formData.append("age", this.age);
+        formData.append("gender", this.gender);
+        formData.append("fileslipupload", this.fileslipupload);
+        console.log(formData, "formData===>");
+        this.buttonstatus = false;
         this.loading = true;
         this.isLoading = true;
         this.$http
@@ -977,7 +990,7 @@ export default {
               this.approval = false;
               this.drtid = '';
               this.drt = '';
-                this.buttonstatus=false;
+              this.buttonstatus = false;
               console.log("this.SetVisit : " + this.SetVisit);
               console.log("this.SetBranch  ; " + this.SetBranch);
               console.log("this.fromdate : " + this.fromdate);
@@ -1035,11 +1048,7 @@ export default {
                   .then(response => {
                     this.processDatabill(response.data);
                     this.isLoading = false;
-
-
                   });
-
-
               } else {
 
                 let normalusername = JSON.parse(sessionStorage.getItem("normal_user"));
@@ -1118,8 +1127,6 @@ export default {
                   .then(response => {
                     this.processDatabill(response.data);
                     this.isLoading = false;
-
-
                   });
 
 
@@ -1145,7 +1152,7 @@ export default {
               }
 
               return true;
-            }else if (response.data.Datainserted === "File not move") {
+            } else if (response.data.Datainserted === "File not move") {
               alert("File Not Uploaded")
               return false
             } else {
@@ -1248,15 +1255,8 @@ export default {
             .then(response => {
               this.processDatabill(response.data);
               this.isLoading = false;
-
             });
-
-
-
         }
-
-
-
         branch = this.SetBranch;
         visit = this.SetVisit;
         var str = "_"
@@ -1265,10 +1265,7 @@ export default {
         console.log(this.fileDate);
 
         this.fileName = `Collection_Report_${this.file}.csv`;
-
-
       }
-
     },
 
     processDatabill(data) {
@@ -1288,7 +1285,6 @@ export default {
       console.log(this.billdata);
       this.show = true;
     },
-
     downloadExcelCollectionSuper() {
       let tempDataArr = [];
       if (this.fileDate !== null) {

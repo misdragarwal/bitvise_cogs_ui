@@ -415,7 +415,9 @@ export default {
 						"NewOPD",
 						"DRTApproval",
 						"pettycashApproval",
-						"Coll_Deposit_View"
+						"Coll_Deposit_View",
+						//Ramu
+						"compApproval"
 					];
 				}
 			}
