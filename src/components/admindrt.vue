@@ -288,11 +288,13 @@
                       </v-card>
                     </v-dialog>
                   </td>
+              
                   <td class="text-xs-right" v-else="props.item.drtApproval_status==='Approved'">
                     {{ props.item.Expense_date }}
                   </td>
-
-
+            <td>{{ props.item.UTR_No }}</td>                  
+<td>{{ props.item.Process_DateTime }}</td>
+<td>{{ props.item.Status }}</td>
                   <td class="text-xs-right">
                     <v-layout row justify-center>
                       <v-dialog v-model="dialog" persistent max-width="800px" lazy absolute>
@@ -406,6 +408,8 @@
                       </v-dialog>
                     </v-layout>
                   </td>
+
+
                 </tr>
               </template>
 
@@ -572,6 +576,9 @@ export default {
       "Sch Name": "SCH_Name",
       "Sch Branch": "SCH_Branch",
       "Expense date": "Expense_date",
+      "UTR_No": "UTR_No",
+      "Pr_Date": "Process_DateTime",
+      "Status": "Status",
       Slip: "Referal_slip"
     },
     fileName: null,
@@ -663,7 +670,21 @@ export default {
       {
         text: "Expense date",
         value: ""
+      },
+      {
+        text: "UTR_No",
+        value: "UTR_No"
+      },
+      {
+        text: "PR Date",
+        value: ""
+      },
+      {
+        text: "Status",
+        value: ""
       }
+
+
     ],
     category: [
       {
