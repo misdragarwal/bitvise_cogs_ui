@@ -86,32 +86,16 @@
 
 
               <v-spacer></v-spacer>
-
-              <!-- <v-menu absolute ref="menu3" v-if="username=='finadmin'" :close-on-content-click="false" v-model="menu3"
-                :nudge-right="40" :return-value.sync="fromdate1" lazy transition="scale-transition" offset-y full-width
-                min-width="150px">
-                <v-text-field slot="activator" v-model="fromdate1" placeholder="Select Date" prepend-inner-icon="event"
-                  readonly></v-text-field>
-                <v-date-picker color="primary" v-model="fromdate1" no-title scrollable :min="minDate1" :max="maxDate"
-                  backgroundRevenue-color="red" style="box-shadow:none">
-                  <v-spacer></v-spacer>
-                  <v-btn flat color="primary" @click="menu3 = false" style="outline:none">Cancel</v-btn>
-                  <v-btn flat color="primary" @click="$refs.menu3.save(fromdate1)" style="outline:none">Ok</v-btn>
-                </v-date-picker>
-              </v-menu>
-
-              <v-btn color="primary" v-if="username=='finadmin'" dark @click="lockdate(fromdate1)">
-                Lockdate
-              </v-btn>
-
-              <v-spacer></v-spacer> -->
-              <!-- <v-toolbar-title>Previous cutoff : {{this.fix_dte}}</v-toolbar-title> -->
-
-              <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
               <v-text-field v-model="search" v-if="billdata" append-icon="mdi-magnify" label="Search" single-line
                 hide-details></v-text-field>
+            
             </v-card-title>
-
+          <v-card-title>
+            <v-badge  v-if="billdata">
+               <b>Note : </b> (TF/PF/PR/PT: Failure, PP -- Pending, PS/ES -- Success)
+                </v-badge>
+            </v-card-title>
             <v-data-table :headers="headers" :items="billdata" v-model="selected" :search="search" class="elevation-4">
               <template slot="items" slot-scope="props">
                 <tr>
@@ -295,6 +279,7 @@
             <td>{{ props.item.UTR_No }}</td>                  
 <td>{{ props.item.Process_DateTime }}</td>
 <td>{{ props.item.Status }}</td>
+<td>{{ props.item.Final_Message }}</td>
                   <td class="text-xs-right">
                     <v-layout row justify-center>
                       <v-dialog v-model="dialog" persistent max-width="800px" lazy absolute>
@@ -579,7 +564,8 @@ export default {
       "UTR_No": "UTR_No",
       "Pr_Date": "Process_DateTime",
       "Status": "Status",
-      Slip: "Referal_slip"
+      'Slip': "Referal_slip",
+      "message":"Final_Message"
     },
     fileName: null,
     headers: [
@@ -681,6 +667,10 @@ export default {
       },
       {
         text: "Status",
+        value: ""
+      },
+      {
+        text: "message",
         value: ""
       }
 

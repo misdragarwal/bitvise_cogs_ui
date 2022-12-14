@@ -78,7 +78,7 @@
                             </v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6 md4>
-                            <v-text-field type='text' clearable v-model="refdocacc" label="Bank Account No" required>
+                            <v-text-field type='text' clearable v-model="refdocacc" label="Bank Account No/UPI" required>
                             </v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6 md4>
@@ -317,6 +317,10 @@ export default {
     {
       shortCode: 'Paytm',
       text: 'paytm'
+    },
+    {
+      shortCode: 'UPI',
+      text: 'UPI'
     },
     ],
     ref_type: [

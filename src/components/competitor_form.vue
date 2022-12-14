@@ -53,7 +53,11 @@
                   <v-text-field class="inputNumber" type='number' v-model="totDoctors" clearable label="Total Doctors">
                   </v-text-field>
                 </v-flex>
+                <v-flex xs12 sm6 md2>
+                  <v-autocomplete :items="comp_empanel" v-model="compEmpanel" label="Empanelment"
+                    item-text="shortCode" item-value="TEXT"></v-autocomplete>
 
+                </v-flex>
                 <v-flex xs12 sm6 md3>
                   <!-- <v-textarea clearable clear-icon="cancel" label="Form of marketing"
                                       v-model='compMarketing'>
@@ -61,12 +65,12 @@
                   <v-autocomplete :items="comp_marketing" v-model="compMarketing" multiple label="Form of marketing"
                     item-text="shortCode" item-value="TEXT"></v-autocomplete>
                 </v-flex>
-                <v-flex xs12 sm6 md3>
+                <v-flex xs12 sm6 md2>
                   <v-autocomplete :items="comp_service" v-model="compService" multiple label="Services"
                     item-text="shortCode" item-value="TEXT"></v-autocomplete>
 
                 </v-flex>
-                <v-flex xs12 sm6 md3>
+                <v-flex xs12 sm6 md2>
                   <v-autocomplete :items="sur_set" v-model="surgSetup" multiple label="Surgical Setup"
                     item-text="shortCode" item-value="TEXT"></v-autocomplete>
 
@@ -88,7 +92,7 @@
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md2>
-                  <v-text-field v-if="(geo==true)" v-model="comp_branch" label="Branch">
+                  <v-text-field v-if="(geo==true)" v-model="comp_branch" label="Agarwal Branch">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md2>
@@ -121,30 +125,30 @@
                   </v-menu>
                 </v-flex>
                 <v-flex xs12 sm3>
-                  <v-text-field class="inputNumber" type='number' v-model="opdNo" clearable label="OPD"></v-text-field>
+                  <v-text-field class="inputNumber" type='number' v-model="opdNo" clearable label="OPD (Nos)"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm3>
-                  <v-text-field class="inputNumber" type='number' v-model="catNo" clearable label="Cataract">
+                  <v-text-field class="inputNumber" type='number' v-model="catNo" clearable label="Cataract (Nos)">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm9 md3>
-                  <v-text-field class="inputNumber" type='number' v-model="refractiveNo" clearable label="Refractive">
+                  <v-text-field class="inputNumber" type='number' v-model="refractiveNo" clearable label="Refractive (Nos)">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm3>
-                  <v-text-field class="inputNumber" type='number' v-model="vrNo" clearable label="VR">
+                  <v-text-field class="inputNumber" type='number' v-model="vrNo" clearable label="VR (Nos)">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm9 md3>
-                  <v-text-field class="inputNumber" type='number' v-model="vrInjNo" clearable label="VR Inj">
+                  <v-text-field class="inputNumber" type='number' v-model="vrInjNo" clearable label="VR Inj (Nos)">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm9 md3>
                   <v-text-field class="inputNumber" type='number' v-model="opticalRevenue" clearable
-                    label="Optical Revenue"></v-text-field>
+                    label="Optical Revenue (in lakhs)"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm9 md3>
-                  <v-text-field class="inputNumber" type='number' v-model="revenueNo" clearable label="Total Revenue">
+                  <v-text-field class="inputNumber" type='number' v-model="revenueNo" clearable label="Total Revenue (in lakhs)">
                   </v-text-field>
                 </v-flex>
 
@@ -252,6 +256,28 @@ export default {
         text: "individual"
       }
     ],
+    comp_empanel: [
+      {
+        shortCode: "State Gov",
+        text: "State Gov"
+      },
+      {
+        shortCode: "CGHS",
+        text: "Cghs"
+      },
+      {
+        shortCode: "ECHS",
+        text: "Echs"
+      },
+      {
+        shortCode: "ESIC",
+        text: "Esic"
+      },
+      {
+        shortCode: "Tpa/Insurance",
+        text: "Tpa/Insurance"
+      }
+    ],
     optical_revenue: [
       {
         shortCode: "NA",
@@ -276,6 +302,7 @@ export default {
     comp_Name: null,
     compDoctors: [],
     compService: [],
+    compEmpanel:[],
     comp_service: [],
     compMarketing: [],
     comp_marketing: [],
@@ -346,6 +373,7 @@ export default {
     clear() {
       this.compDoctors = "";
       this.compService = "";
+      this.compEmpanel='';
       this.compMarketing = "";
       this.totDoctors = 0;
       (this.surgSetup = ""), (this.opdNo = 0);
@@ -386,7 +414,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compName == null || this.compName == "") {
+      if (this.comp_Name === null || this.comp_Name === "" ||this.comp_Name==='New') {
         alert("Competitor Name is required");
         this.submitDraftvalid = true;
         return false;
@@ -450,6 +478,7 @@ export default {
             cbranch: this.comp_branch,
             city: this.comp_City,
             priority: this.priority,
+            empanelment:this.compEmpanel,
             saveType: 0,
             type: 0,
             services: {
@@ -502,7 +531,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compName == null || this.compName == "") {
+      if (this.compName == null || this.compName == "" || this.compName =='New') {
         alert("Competitor Name is required");
         this.submitDraftvalid = true;
         return false;
@@ -562,6 +591,7 @@ export default {
             surgSetup: this.surgSetup,
             optRevenue: this.optRevenue,
             priority: this.priority,
+            empanelment:this.compEmpanel,
             saveType: 0,
             type: 1,
             services: {
@@ -610,7 +640,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compName == null || this.compName == "") {
+      if (this.compName == null || this.compName == "" || this.compName =='New') {
         alert("Competitor Name is required");
         this.submitDraftvalid = true;
         return false;
@@ -674,6 +704,7 @@ export default {
               cbranch: this.comp_branch,
               city: this.comp_City,
               priority: this.priority,
+              empanelment:this.compEmpanel,
               type: 2,
               services: {
                 opd: this.opdNo,
@@ -720,7 +751,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compName == null || this.compName == "") {
+      if (this.compName == null || this.compName == "" || this.compName== 'New') {
         alert("Competitor Name is required");
         this.submitDraftvalid = true;
         return false;
@@ -775,6 +806,7 @@ export default {
             surgSetup: this.surgSetup,
             optRevenue: this.optRevenue,
             priority: this.priority,
+            empanelment:this.compEmpanel,
             saveType: 1,
             services: {
               opd: this.opdNo,
