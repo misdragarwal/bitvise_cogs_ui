@@ -3599,6 +3599,7 @@ export default {
         this.isLoading = true;
         this.$http
           .get(`https://mis.dragarwal.com/mis-revenue-domestic/${date}`)
+          //.get(`http://localhost:7777/mis-revenue-domestic/${date}`)
                     .then(response => {
             this.processDataDomesticRevenue(response.data);
             this.isLoading = false;
@@ -3648,8 +3649,8 @@ export default {
       this.karnataka = [data.ahcgroup["Karnataka"]];
       this.banglore = [data.ahcgroup["Banglore"]];
       this.banglore_branches = data.branchwise["Banglore"];
-      this.hub_mys = [data.ahcgroup["Hubli + Mysore"]];
-      this.hub_mys_branches = data.branchwise["Hubli + Mysore"];
+      this.hub_mys = [data.ahcgroup["ROK"]];
+      this.hub_mys_branches = data.branchwise["ROK"];
 	  this.maharashtra = [data.ahcgroup["Maharashtra"]];
       this.maharashtra_branches = data.branchwise["Maharashtra"];
 	  this.mumbai = [data.ahcgroup["Mumbai"]];

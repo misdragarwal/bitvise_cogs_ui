@@ -2790,7 +2790,7 @@
 				
 				<tr
                   scope="row"
-                  v-for="(item,index) in nairobi"
+                  v-for="(item,index) in kenya"
                   :key="index+item.branch"
                   class="font-weight-black ochfont"
                 >
@@ -5384,7 +5384,7 @@
 				
 				<tr
                   scope="row"
-                  v-for="(item,index) in nairobi"
+                  v-for="(item,index) in kenya"
                   :key="index+item.branch"
                   class="font-weight-black ochfont"
                 >
@@ -5621,7 +5621,7 @@ export default {
     mauritius_branches: null,
 	zambia: null,
 	ghana: null,
-	nairobi: null,
+	kenya: null,
 	uganda: null,
 	tanzania: null,
     json_data: null,
@@ -5660,6 +5660,8 @@ export default {
         this.isLoading = true;
         this.$http
           .get(`https://mis.dragarwal.com/api-newpod-super/${date}`)
+          //.get(`http://localhost:8888/api-newpod-super/${date}`) 
+
                     .then(response => {
             this.processDataOPDSuper(response.data);
             this.isLoading = false;
@@ -5715,8 +5717,8 @@ export default {
       this.karnataka = [data.ahcgroup["Karnataka"]];
       this.banglore = [data.ahcgroup["Banglore"]];
       this.banglore_branches = data.branchwise["Banglore"];
-      this.hub_mys = [data.ahcgroup["Hubli + Mysore"]];
-      this.hub_mys_branches = data.branchwise["Hubli + Mysore"];
+      this.hub_mys = [data.ahcgroup["ROK"]];
+      this.hub_mys_branches = data.branchwise["ROK"];
       this.telangana = [data.ahcgroup["Telangana"]];
       this.hyderabad = [data.ahcgroup["Hyderabad"]];
       this.hyderabad_branches = data.branchwise["Hyderabad"];
@@ -5752,7 +5754,7 @@ export default {
       this.mauritius_branches = data.branchwise["Mauritius"];
 	  this.zambia = data.branchwise["Zambia"];
 	  this.ghana = data.branchwise["Ghana"];
-	  this.nairobi = data.branchwise["Nairobi"];
+	  this.kenya = data.branchwise["Kenya"];
 	  this.uganda = data.branchwise["Uganda"];
 	  this.tanzania = data.branchwise["Tanzania"];
 	   
@@ -5828,7 +5830,7 @@ export default {
 			  this.mauritius_branches,
 			  this.zambia,
 			  this.ghana,
-			  this.nairobi,
+			  this.kenya,
 			  this.uganda,
 			  this.tanzania
 			  // this.amb
@@ -5851,7 +5853,7 @@ export default {
 			  this.mauritius_branches,
 			  this.zambia,
 			  this.ghana,
-			  this.nairobi,
+			  this.kenya,
 			  this.uganda,
 			  this.tanzania
 			  // this.amb

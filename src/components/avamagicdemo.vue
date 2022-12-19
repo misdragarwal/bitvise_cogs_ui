@@ -657,7 +657,7 @@ export default {
     mauritius_branches: null,
 	zambia: null,
 	ghana: null,
-	nairobi: null,
+	kenya: null,
 	uganda: null,
 	tanzania: null,
     json_data: null,
@@ -768,7 +768,7 @@ export default {
       this.mauritius_branches = data.branchwise["Mauritius"];
 	  this.zambia = data.branchwise["Zambia"];
 	  this.ghana = data.branchwise["Ghana"];
-	  this.nairobi = data.branchwise["Nairobi"];
+	  this.kenya = data.branchwise["Kenya"];
 	  this.uganda = data.branchwise["Uganda"];
 	  this.tanzania = data.branchwise["Tanzania"];
 	   

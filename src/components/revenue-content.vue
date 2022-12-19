@@ -3861,8 +3861,8 @@ export default {
       this.karnataka = [data.ahcgroup["Karnataka"]];
       this.banglore = [data.ahcgroup["Banglore"]];
       this.banglore_branches = data.branchwise["Banglore"];
-      this.hub_mys = [data.ahcgroup["Hubli + Mysore"]];
-      this.hub_mys_branches = data.branchwise["Hubli + Mysore"];
+      this.hub_mys = [data.ahcgroup["ROK"]];
+      this.hub_mys_branches = data.branchwise["ROK"];
       this.telangana = [data.ahcgroup["Telangana"]];
       this.hyderabad = [data.ahcgroup["Hyderabad"]];
       this.hyderabad_branches = data.branchwise["Hyderabad"];

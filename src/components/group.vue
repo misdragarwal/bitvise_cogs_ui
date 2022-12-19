@@ -4280,10 +4280,10 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
-				
-				<tr
+
+              <tr
                   scope="row"
-                  v-for="(item,index) in nairobi"
+                  v-for="(item,index) in kenya"
                   :key="index+item.branch"
                   class="font-weight-black ochfont"
                 >
@@ -4331,7 +4331,55 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
-				
+				<tr
+                  scope="row"
+                  v-for="(item,index) in kenya_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				 <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+				</tr>
 				<tr
                   scope="row"
                   v-for="(item,index) in uganda"
@@ -5000,7 +5048,7 @@
 				
 				<tr
                   scope="row"
-                  v-for="(item,index) in nairobi"
+                  v-for="(item,index) in kenya"
                   :key="index+item.branch"
                   class="font-weight-black ochfont"
                 >
@@ -5280,10 +5328,12 @@ export default {
 	rwanda: null,
 	rwanda_branches: null,
 	mauritius: null,
-    mauritius_branches: null,
+  mauritius_branches: null,
 	zambia: null,
+  zambia_branches:null,
 	ghana: null,
-	nairobi: null,
+	kenya: null,
+  kenya_branches: null,
 	uganda: null,
 	tanzania: null,
     json_data: null,
@@ -5324,6 +5374,7 @@ export default {
         this.isLoading = true;
         this.$http
           .get(`https://mis.dragarwal.com/mis-revenue-overseas/${date}`)
+          //.get(`http://localhost:7777/mis-revenue-overseas/${date}`)
                     .then(response => {
             this.processDataGroupRevenue(response.data);
             this.isLoading = false;
@@ -5389,8 +5440,8 @@ export default {
       this.karnataka = [data.ahcgroup["Karnataka"]];
       this.banglore = [data.ahcgroup["Banglore"]];
       this.banglore_branches = data.branchwise["Banglore"];
-      this.hub_mys = [data.ahcgroup["Hubli + Mysore"]];
-      this.hub_mys_branches = data.branchwise["Hubli + Mysore"];	  
+      this.hub_mys = [data.ahcgroup["ROK"]];
+      this.hub_mys_branches = data.branchwise["ROK"];	  
 	  this.maharashtra = [data.ahcgroup["Maharashtra"]];
       this.maharashtra_branches = data.branchwise["Maharashtra"];
 	  this.mumbai = [data.ahcgroup["Mumbai"]];
@@ -5422,9 +5473,11 @@ export default {
 	  this.mauritius = [data.ohcgroup["Mauritius"]];
       this.mauritius_branches = data.branchwise["Mauritius"];
 	  this.zambia = data.branchwise["Zambia"];
+    this.zambia_branches = data.branchwise["Zambia"];
 	  this.ghana = data.branchwise["Ghana"];
-	  this.nairobi = data.branchwise["Nairobi"];
-	  this.uganda = data.branchwise["Uganda"];
+    this.kenya = [data.ohcgroup["Kenya"]];
+	  this.kenya_branches = data.branchwise["Kenya"];
+    	  this.uganda = data.branchwise["Uganda"];
 	  this.tanzania = data.branchwise["Tanzania"];
       this.show = true;
     },
@@ -5495,8 +5548,10 @@ export default {
 			  this.mauritius,
 			  this.mauritius_branches,
 			  this.zambia,
+        this.zambia_branches,
 			  this.ghana,
-			  this.nairobi,
+			  this.kenya,
+        this.kenya_branches,
 			  this.uganda,
 			  this.tanzania
 			  // this.amb
@@ -5519,7 +5574,7 @@ export default {
 			  this.mauritius_branches,
 			  this.zambia,
 			  this.ghana,
-			  this.nairobi,
+			  this.kenya,
 			  this.uganda,
 			  this.tanzania
 			  // this.amb
