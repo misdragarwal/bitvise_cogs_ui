@@ -434,7 +434,7 @@ export default {
            
           var arr1 = [{TEXT: '',shortCode: 'Select All', }];		  
 		  this.axios		   
-			.get(`http://localhost:8888/api-chbranch/${userid.userName}`).then(response => {		
+			.get(`https://mis.dragarwal.com/api-chbranch/${userid.userName}`).then(response => {		
 			  console.log(response.data);
 			  this.branch = arr1.concat(response.data);
 			  //alert(JSON.stringify(this.branch));
@@ -444,7 +444,7 @@ export default {
 	
 	branchamount(selectObj) {
 		  this.axios		   
-			.get(`http://localhost:8888/api-bramch-allocated-amount/${selectObj}`).then(response => {			
+			.get(`https://mis.dragarwal.com/api-bramch-allocated-amount/${selectObj}`).then(response => {			
 				alert(response.data[0]['credit']);
 				this.show = true;
 				this.pettycash_branch=response.data[0]['branch'];
@@ -458,7 +458,7 @@ export default {
 	loadcategoty() {           
           var arr2 = [{text: '',shortCode: 'Select All', }];		  
 		  this.axios		   
-			.get(`http://localhost:8888/api-pettycashcategory`).then(response => {			  
+			.get(`https://mis.dragarwal.com/api-pettycashcategory`).then(response => {			  
 			  this.items = arr2.concat(response.data);		  
 			 
 			})
