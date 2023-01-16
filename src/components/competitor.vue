@@ -92,6 +92,9 @@
                 <v-flex xs12 sm6 md4>
                     <td class="text-xs-left"><b>Marketing Style :</b> {{ props.item.marketing_activity }}</td>
                 </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <td class="text-xs-left"><b>Empanelment :</b> {{ props.item.empanelment }}</td>
+                </v-flex>
                 <v-flex xs12 sm8 md2>
                     <td class="text-xs-left"><b>OPD :</b> {{ props.item.opd }}</td>
 
@@ -134,6 +137,7 @@
     <td class="text-xs-left">{{ props.item.services }}</td>
     <td class="text-xs-left">{{ props.item.target_month }}</td>
     <td class="text-xs-left">{{ props.item.marketing_activity }}</td>
+    <td class="text-xs-left">{{ props.item.empanelment }}</td>
     <td class="text-xs-left">{{ props.item.opd }}</td>
     <td class="text-xs-left">{{ props.item.cataract }}</td>
     <td class="text-xs-left">{{ props.item.refractive }}</td>
@@ -167,7 +171,7 @@ import { serverBus } from "../main";
 var curday = function (sp) {
     var today = new Date();
     var dd = today.getDate();
-    var mm = today.getMonth() + 1; //As January is 0.
+    var mm = today.getMonth(); //As January is 0.
     var yyyy = today.getFullYear();
 
     if (dd < 10) dd = "0" + dd;
@@ -258,7 +262,10 @@ export default {
                 text: 'Key Marketing Activity',
                 value: 'marketing_activity'
             },
-
+            {
+                text: 'Empanelment',
+                value: 'empanelment'
+            },
             {
                 text: 'Opd',
                 value: 'opd'
@@ -306,6 +313,7 @@ export default {
             "KEY DOCTOR": "doctor_name",
             "SERVICE AVAILABLE": "services",
             "KEY MARKETING ACTIVITY": "marketing_activity",
+            "EMPANELMENT":"empanelment",
             "SURGICAL":"surgical",
             "OPTICAL TYPE":"optical_type",
             "OPD": "opd",

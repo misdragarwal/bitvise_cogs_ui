@@ -54,7 +54,7 @@
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md2>
-                  <v-autocomplete :items="comp_empanel" v-model="compEmpanel" label="Empanelment"
+                  <v-autocomplete :items="comp_empanel" v-model="compEmpanel" label="Empanelment" multiple
                     item-text="shortCode" item-value="TEXT"></v-autocomplete>
 
                 </v-flex>
@@ -231,7 +231,7 @@ import { serverBus } from "../main";
 var curday = function(sp) {
   var today = new Date();
   var dd = today.getDate();
-  var mm = today.getMonth() + 1; //As January is 0.
+  var mm = today.getMonth(); //As January is 0.
   var yyyy = today.getFullYear();
 
   if (dd < 10) dd = "0" + dd;
@@ -429,7 +429,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compService == null || this.compService === "") {
+      if (this.compService == null || this.compService === ""|| this.compService.length==0) {
         alert("Service is required");
         this.submitDraftvalid = true;
         return false;
@@ -466,7 +466,7 @@ export default {
             doctorName: this.compDoctors.toString(),
             totDoctors: this.totDoctors,
             createdBy: userid.name,
-            marketing: this.compMarketing,
+            marketing: this.compMarketing.toString(),
             month: this.date,
             companyName: this.comp_Name,
             compType: this.Selcomptype,
@@ -478,7 +478,7 @@ export default {
             cbranch: this.comp_branch,
             city: this.comp_City,
             priority: this.priority,
-            empanelment:this.compEmpanel,
+            empanelment:this.compEmpanel.toString(),
             saveType: 0,
             type: 0,
             services: {
@@ -546,7 +546,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compService == null || this.compService === "") {
+      if (this.compService == null || this.compService === ""||this.compService.length==0) {
         alert("Service is required");
         this.submitDraftvalid = true;
         return false;
@@ -591,7 +591,7 @@ export default {
             surgSetup: this.surgSetup,
             optRevenue: this.optRevenue,
             priority: this.priority,
-            empanelment:this.compEmpanel,
+            empanelment:this.compEmpanel.toString(),
             saveType: 0,
             type: 1,
             services: {
@@ -655,7 +655,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compService == null || this.compService === "") {
+      if (this.compService == null || this.compService === ""||this.compService.length==0) {
         alert("Service is required");
         this.submitDraftvalid = true;
         return false;
@@ -704,7 +704,7 @@ export default {
               cbranch: this.comp_branch,
               city: this.comp_City,
               priority: this.priority,
-              empanelment:this.compEmpanel,
+              empanelment:this.compEmpanel.toString(),
               type: 2,
               services: {
                 opd: this.opdNo,
@@ -766,7 +766,7 @@ export default {
         this.submitDraftvalid = true;
         return false;
       }
-      if (this.compService == null || this.compService === "") {
+      if (this.compService == null || this.compService === ""||this.compService.length==0) {
         alert("Service is required");
         this.submitDraftvalid = true;
         return false;
@@ -798,15 +798,15 @@ export default {
             doctorName: this.compDoctors.toString(),
             totDoctors: this.totDoctors,
             createdBy: userid.name,
-            marketing: this.compMarketing,
+            marketing: this.compMarketing.toString(),
             month: this.date,
             companyName: this.comp_Name,
             compType: this.Selcomptype,
-            serviceAvail: this.compService,
+            serviceAvail: this.compService.toString(),
             surgSetup: this.surgSetup,
             optRevenue: this.optRevenue,
             priority: this.priority,
-            empanelment:this.compEmpanel,
+            empanelment:this.compEmpanel.toString(),
             saveType: 1,
             services: {
               opd: this.opdNo,
@@ -913,6 +913,7 @@ export default {
       (this.surgSetup = a.surgical.split(",")),
         (this.optRevenue = a.optical_type),
         (this.date = a.target_month);
+        this.compEmpanel=a.empanelment.split(",")
       this.opdNo = a.opd;
       this.catNo = a.cataract;
       this.refractiveNo = a.refractive;

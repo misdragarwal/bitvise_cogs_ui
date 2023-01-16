@@ -130,6 +130,7 @@ import dob from './components/dob.vue'
 import snapshotrevenue from "./components/snapshotrevenue.vue"
 import snapshotrevenueebita from "./components/snapshotrevenueebita.vue"
 import coll_recon from "./components/collection_recon.vue"
+import adv_surgery from "./components/advicetosurgery.vue"
 import coll_recon_admin from "./components/collection_recon_admin.vue"
 import coll_recon_sch from "./components/collection_recon_sch.vue"
 import coll_recon_fin_view from "./components/collection_recon_fin_view.vue"
@@ -210,6 +211,7 @@ export default {
 	snapshotrevenue,
 	snapshotrevenueebita,
 	coll_recon,
+	adv_surgery,
     coll_recon_admin,
 	coll_recon_sch,
 	coll_recon_fin_view,
@@ -353,6 +355,7 @@ export default {
 						"DRT",
 						"Petty Cash",
 						"TPA",
+						"Adv_Surg",
 						"Coll_Deposit"
 					];
 				} else if (this.userId == "103741") {
@@ -618,6 +621,8 @@ export default {
         serverBus.$emit('changeComponent', 'coll_recon_admin')
       }if (item === 'Coll_Deposit') {
         serverBus.$emit('changeComponent', 'coll_recon')
+      }if (item === 'Adv_Surg') {
+        serverBus.$emit('changeComponent', 'adv_surgery')
       }if (item === 'Coll_Deposit_View') {
         serverBus.$emit('changeComponent', 'coll_recon_sch')
       }if (item === 'StockExpiry') {
