@@ -35,8 +35,8 @@
                   <v-autocomplete v-if="competName==false" v-model="comp_Name" v-bind:items="compName"
                     v-on:change="changeNewText" label="Competitor Name" item-text="shortCode" item-value="TEXT">
                   </v-autocomplete>
-                  <v-text-field v-else="!(comp_Name ===null||comp_Name==='')" v-model="comp_Name"
-                    label="Competitor Name">
+                  <v-text-field v-else="competName==true" v-model="comp_Name_New"
+                    label="Add Competitor Name">
                   </v-text-field>
                 </v-flex>
 
@@ -300,6 +300,7 @@ export default {
     ],
     competName: false,
     comp_Name: null,
+    comp_Name_New:null,
     compDoctors: [],
     compService: [],
     compEmpanel:[],
@@ -386,6 +387,7 @@ export default {
       this.date = null;
       this.competName = false;
       this.comp_Name = "";
+      this.comp_Name_New='';
       this.comp_State = "";
       this.comp_City = "";
       this.comp_Area = "";
@@ -403,6 +405,7 @@ export default {
       this.opticalRevenue=0;
     },
     saveDraft() {
+      this.comp_Name=this.comp_Name_New
       this.submitDraftvalid = false;
       if (this.selbranch === null || this.selbranch === "") {
         alert("Branch is required");
@@ -439,11 +442,11 @@ export default {
       //   this.submitDraftvalid = true;
       //   return false;
       // }
-      if (this.compMarketing == null || this.compMarketing === "") {
-        alert("Marketing activity is required");
-        this.submitDraftvalid = true;
-        return false;
-      }
+      // if (this.compMarketing == null || this.compMarketing === "") {
+      //   alert("Marketing activity is required");
+      //   this.submitDraftvalid = true;
+      //   return false;
+      // }
       // if (this.surgSetup == null || this.surgSetup === "") {
       //   alert("Surgical Setup is required");
       //   this.submitDraftvalid = true;
@@ -941,7 +944,7 @@ export default {
       var arr1 = [
         {
           shortCode: "New",
-          text: "New Competitor"
+          text: ""
         }
       ];
 
@@ -954,7 +957,6 @@ export default {
           if (data === "individual") {
             this.compName = arr1.concat(response.data.data);
           } else if (data === "group") {
-            console.log("...............", response.data.data);
             this.compName = response.data.data;
           }
         });
@@ -964,6 +966,7 @@ export default {
       if (a == "New") {
         this.competName = true;
         this.geo = true;
+        this.comp_Name=''
       } else {
         this.loadCompetitorDetail(a, this.selbranch);
       }
