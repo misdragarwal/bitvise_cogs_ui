@@ -65,7 +65,7 @@
                             </v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6 md4>
-                            <v-text-field type='text' clearable v-model="refdocpan" @change="Panrules(b)" label="Pan No"
+                            <v-text-field type='text' clearable v-model="refdocpan"  @change="Panrules" label="Pan No"
                               required></v-text-field>
                             <small>*If no Pan please enter NA</small>
                           </v-flex>
@@ -73,8 +73,12 @@
                             <v-text-field type='text' clearable v-model="refdocgstin" label="GSTIN No" required>
                             </v-text-field>
                           </v-flex>
-                          <v-flex xs12 sm6 md4>
-                            <v-text-field type='text' clearable v-model="refdocagreed" label="Agreed %" required>
+                          <v-flex xs12 sm8 md2>
+                            <v-text-field type='text' clearable v-model="refdocagreedop" label="Op%" required>
+                            </v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm8 md2>
+                            <v-text-field type='text' clearable v-model="refdocagreedip" label="Ip%" required>
                             </v-text-field>
                           </v-flex>
                           <v-flex xs12 sm6 md4>
@@ -127,7 +131,7 @@
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" flat @click="newdoctor = false">Close</v-btn>
                       <v-btn color="blue darken-1" flat
-                        @click="apiinsertrefdoc(refType,refdoctor, refinfavourdoctor, refdocbranch, refdoccontact, refdocemail, refdocpan, refdocgstin, refdocagreed, refdocacc, refdocaccifsc, refdocaccbank)">
+                        @click="apiinsertrefdoc(refType,refdoctor, refinfavourdoctor, refdocbranch, refdoccontact, refdocemail, refdocpan, refdocgstin, refdocagreedop,refdocagreedip, refdocacc, refdocaccifsc, refdocaccbank)">
                         Submit</v-btn>
 
                     </v-card-actions>
@@ -153,7 +157,8 @@
                   <td class="text-xs-left">{{ props.item.Branch }}</td>
                   <td class="text-xs-left">{{ props.item.Name }}</td>
                   <td class="text-xs-left">{{ props.item.Infavour_of }}</td>
-                  <td class="text-xs-left">{{ props.item.Percentage }}</td>
+                  <td class="text-xs-left">{{ props.item.OP_Percentage }}</td>
+                  <td class="text-xs-left">{{ props.item.IP_Percentage }}</td>
                   <td class="text-xs-left">{{ props.item.Pan_no }}</td>
                   <td class="text-xs-left">{{ props.item.Bank_name }}</td>
                   <td class="text-xs-left">{{ props.item.Account_no }}</td>
@@ -210,167 +215,172 @@
 
 <script>
 import DRT from "@/components/chdrt";
-import {
-  serverBus
-} from "@/main";
+import { serverBus } from "@/main";
 export default {
   data: () => ({
-    currentstatus: [{
-      shortCode: "Select All",
-      text: "All"
-    },
-    {
-      shortCode: "Pending",
-      text: "-1",
-    },
-    {
-      shortCode: "Approved",
-      text: "1",
-    },
-    {
-      shortCode: "Cancelled",
-      text: "-2",
-    },
+    currentstatus: [
+      {
+        shortCode: "Select All",
+        text: "All"
+      },
+      {
+        shortCode: "Pending",
+        text: "-1"
+      },
+      {
+        shortCode: "Approved",
+        text: "1"
+      },
+      {
+        shortCode: "Cancelled",
+        text: "-2"
+      }
     ],
-    headers: [{
-      text: 'Status',
-      align: 'left',
-      sortable: false,
-      value: 'Status'
-
-    },
-    {
-      text: 'Finance Comments',
-      align: 'left',
-      sortable: true,
-      value: 'Comments'
-    },
-    {
-      text: 'Branch',
-      value: 'Branch'
-    },
-    {
-      text: 'Name',
-      value: 'Name'
-    },
-    {
-      text: 'Infavour of',
-      value: 'Infavour_of'
-    },
-    {
-      text: 'Agreed %',
-      value: 'Percentage'
-    },
-    {
-      text: 'Pan no',
-      value: 'Pan_no'
-    },
-    {
-      text: 'Bank Name',
-      value: 'Bank_name'
-    },
-    {
-      text: 'Account no',
-      value: 'Account_no'
-    },
-    {
-      text: 'Bank IFSC',
-      value: 'Bank_ifsc'
-    },
-    {
-      text: 'Payment type',
-      value: 'Payment_type'
-    },
-    {
-      text: 'Agreement',
-      value: 'Agreement_url'
-    },
-    {
-      text: 'Pan',
-      value: 'Pan_url'
-    },
-    {
-      text: 'Passbook',
-      value: 'Passbook_url'
-    }
+    headers: [
+      {
+        text: "Status",
+        align: "left",
+        sortable: false,
+        value: "Status"
+      },
+      {
+        text: "Finance Comments",
+        align: "left",
+        sortable: true,
+        value: "Comments"
+      },
+      {
+        text: "Branch",
+        value: "Branch"
+      },
+      {
+        text: "Name",
+        value: "Name"
+      },
+      {
+        text: "Infavour of",
+        value: "Infavour_of"
+      },
+      {
+        text: "Op %",
+        value: "OP_Percentage"
+      },
+      {
+        text: "Ip %",
+        value: "IP_Percentage"
+      },
+      {
+        text: "Pan no",
+        value: "Pan_no"
+      },
+      {
+        text: "Bank Name",
+        value: "Bank_name"
+      },
+      {
+        text: "Account no",
+        value: "Account_no"
+      },
+      {
+        text: "Bank IFSC",
+        value: "Bank_ifsc"
+      },
+      {
+        text: "Payment type",
+        value: "Payment_type"
+      },
+      {
+        text: "Agreement",
+        value: "Agreement_url"
+      },
+      {
+        text: "Pan",
+        value: "Pan_url"
+      },
+      {
+        text: "Passbook",
+        value: "Passbook_url"
+      }
     ],
-    paymententities: [{
-      shortCode: 'Cash',
-      text: 'Cash'
-    },
-    {
-      shortCode: 'Card',
-      text: 'Card'
-    },
-    {
-      shortCode: 'Cheque',
-      text: 'Cheque'
-    },
-    {
-      shortCode: 'DD',
-      text: 'DD'
-    },
-    {
-      shortCode: 'Fund Transfer',
-      text: 'Fund Transfer'
-    },
-    {
-      shortCode: 'Paytm',
-      text: 'paytm'
-    },
-    {
-      shortCode: 'UPI',
-      text: 'UPI'
-    },
+    paymententities: [
+      {
+        shortCode: "Cash",
+        text: "Cash"
+      },
+      {
+        shortCode: "Card",
+        text: "Card"
+      },
+      {
+        shortCode: "Cheque",
+        text: "Cheque"
+      },
+      {
+        shortCode: "DD",
+        text: "DD"
+      },
+      {
+        shortCode: "Fund Transfer",
+        text: "Fund Transfer"
+      },
+      {
+        shortCode: "Paytm",
+        text: "paytm"
+      },
+      {
+        shortCode: "UPI",
+        text: "UPI"
+      }
     ],
     ref_type: [
       {
-        shortCode: 'Doctor',
-        text: 'DOC'
+        shortCode: "Doctor",
+        text: "DOC"
       },
       {
-        shortCode: 'Optical',
-        text: 'OPT'
+        shortCode: "Optical",
+        text: "OPT"
       },
       {
-        shortCode: 'Pharmacy',
-        text: 'PHR'
+        shortCode: "Pharmacy",
+        text: "PHR"
       },
 
       {
-        shortCode: 'Other',
-        text: 'OTH'
-      },
+        shortCode: "Other",
+        text: "OTH"
+      }
     ],
     isLoading: false,
     fullPage: true,
     doctorlist: null,
     Agreementfile: null,
-    search: '',
+    search: "",
     selected: [],
     newdoctor: false,
-    refType:'',
-    refdoctor: '',
-    refinfavourdoctor: '',
-    refdocbranch: '',
-    refdoccontact: '',
-    refdocemail: '',
-    refdocpan: '',
-    refdocgstin: '',
-    refdocagreed: "",
-    refdocacc: '',
-    refdocaccifsc: '',
-    refdocaccbank: '',
-    agreementupload: '',
-    panupload: '',
-    passbookupload: '',
-    Setpayment:'',
+    refType: "",
+    refdoctor: "",
+    refinfavourdoctor: "",
+    refdocbranch: "",
+    refdoccontact: "",
+    refdocemail: "",
+    refdocpan: "",
+    refdocgstin: "",
+    refdocagreedop: "",
+    refdocagreedopip:"",
+    refdocacc: "",
+    refdocaccifsc: "",
+    refdocaccbank: "",
+    agreementupload: "",
+    panupload: "",
+    passbookupload: "",
+    Setpayment: "",
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid',
+      v => !!v || "E-mail is required",
+      v => /.+@.+/.test(v) || "E-mail must be valid"
     ],
-    Setstatus:'',
-
+    Setstatus: "",
+    checkPandata:false
   }),
   components: {
     DRT
@@ -381,21 +391,26 @@ export default {
   methods: {
     apiRequesticdoctorlist(Setstatus) {
       let userid = JSON.parse(sessionStorage.getItem("normal_user"));
-      let statustype = ''
+      let statustype = "";
 
-      if ((this.Setstatus == null) || (this.Setstatus == '')) {
-        alert("Please select the status type")
+      if (this.Setstatus == null || this.Setstatus == "") {
+        alert("Please select the status type");
         return false;
       }
-      statustype = this.Setstatus
+      statustype = this.Setstatus;
       console.log("statustype : :" + statustype);
       this.isLoading = true;
-      this.$http.get(`https://mis.dragarwal.com/api-chdoctorlist/${statustype}/${userid.name}`).then(response => {
-        console.log(response.data);
-        this.processdatalist(response.data)
-        this.isLoading = false;
-      })
-
+      this.$http
+        .get(
+          `${process.env.API_URL}/api-chdoctorlist/${statustype}/${
+            userid.name
+          }`
+        )
+        .then(response => {
+          console.log(response.data);
+          this.processdatalist(response.data);
+          this.isLoading = false;
+        });
     },
     processdatalist(data) {
       this.doctorlist = data.result["doctordata"];
@@ -406,66 +421,62 @@ export default {
       //alert("hit : " + Agreement_d);
       this.axios({
         url: `https://mis.dragarwal.com/api-download/${Agreement_d}`,
-        method: 'GET',
-        responseType: 'blob',
+        method: "GET",
+        responseType: "blob"
       }).then(response => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement('a');
+        var fileLink = document.createElement("a");
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', Agreement_d);
+        fileLink.setAttribute("download", Agreement_d);
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      })
-
+      });
     },
     downloadpan(Pan_d) {
       //alert("hit : " + Pan_d);
       this.axios({
         url: `https://mis.dragarwal.com/api-download/${Pan_d}`,
-        method: 'GET',
-        responseType: 'blob',
+        method: "GET",
+        responseType: "blob"
       }).then(response => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement('a');
+        var fileLink = document.createElement("a");
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', Pan_d);
+        fileLink.setAttribute("download", Pan_d);
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      })
-
+      });
     },
     downloadpassbook(Passbook_d) {
       //alert("hit : " + Passbook_d);
       this.axios({
         url: `https://mis.dragarwal.com/api-download/${Passbook_d}`,
-        method: 'GET',
-        responseType: 'blob',
+        method: "GET",
+        responseType: "blob"
       }).then(response => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement('a');
+        var fileLink = document.createElement("a");
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', Passbook_d);
+        fileLink.setAttribute("download", Passbook_d);
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      })
-
+      });
     },
     handleFileUploadagreement() {
       this.fileagreementupload = this.$refs.agreementupload.files[0];
       console.log(this.fileagreementupload);
       console.log((this.fileagreementupload.size / 1024 / 1024).toFixed(2));
       if ((this.fileagreementupload.size / 1024 / 1024).toFixed(2) > 1.5) {
-        alert("Agreement file is greater than 1MB")
+        alert("Agreement file is greater than 1MB");
 
-
-        this.fileagreementupload = '';
-        console.log(this.$refs.agreementupload.files = null);
+        this.fileagreementupload = "";
+        console.log((this.$refs.agreementupload.files = null));
         // this.$refs.agreementupload.files[0]='';
 
         console.log(this.fileagreementupload);
@@ -476,9 +487,9 @@ export default {
       console.log(this.filepanupload);
       console.log((this.filepanupload.size / 1024 / 1024).toFixed(2));
       if ((this.filepanupload.size / 1024 / 1024).toFixed(2) > 1.5) {
-        alert("Pan file is greater than 1MB")
+        alert("Pan file is greater than 1MB");
 
-        this.filepanupload = '';
+        this.filepanupload = "";
         console.log(this.filepanupload);
       }
     },
@@ -487,34 +498,47 @@ export default {
       console.log(this.filepassbookupload);
       console.log((this.filepassbookupload.size / 1024 / 1024).toFixed(2));
       if ((this.filepassbookupload.size / 1024 / 1024).toFixed(2) > 1.5) {
-        alert("Passbook file is greater than 1MB")
+        alert("Passbook file is greater than 1MB");
 
         this.filepassbookupload = null;
         console.log(this.filepassbookupload);
       }
     },
-    apiinsertrefdoc(refType,refdoctor, refinfavourdoctor, Setpayment, refdocbranch, refdoccontact, refdocemail, refdocpan, refdocgstin, refdocagreed, refdocacc, refdocaccifsc, refdocaccbank) {
-      let ref_type='';
-      let ref_doctor = '';
-      let ref_docbranch = '';
-      let ref_doccontact = '';
-      let ref_docemail = '';
-      let ref_docpan = '';
-      let ref_docgstin = '';
-      let ref_docagreedperc = '';
-      let ref_docacc = '';
-      let ref_docaccifsc = '';
-      let ref_docaccbank = '';
-      let ref_agreementupload = '';
-      let ref_panupload = '';
-      let ref_passbookupload = '';
-      let ref_infavourdoctor = '';
-      let ref_payment = '';
+    apiinsertrefdoc(
+      refType,
+      refdoctor,
+      refinfavourdoctor,
+      Setpayment,
+      refdocbranch,
+      refdoccontact,
+      refdocemail,
+      refdocpan,
+      refdocgstin,
+      refdocagreed,
+      refdocacc,
+      refdocaccifsc,
+      refdocaccbank
+    ) {
+      let ref_type = "";
+      let ref_doctor = "";
+      let ref_docbranch = "";
+      let ref_doccontact = "";
+      let ref_docemail = "";
+      let ref_docpan = "";
+      let ref_docgstin = "";
+      let ref_docagreedperc = "";
+      let ref_docacc = "";
+      let ref_docaccifsc = "";
+      let ref_docaccbank = "";
+      let ref_agreementupload = "";
+      let ref_panupload = "";
+      let ref_passbookupload = "";
+      let ref_infavourdoctor = "";
+      let ref_payment = "";
       var formData = new FormData();
 
       let normalusername = JSON.parse(sessionStorage.getItem("normal_user"));
 
-      
       formData.append("doctortype", this.refType);
       formData.append("doctorname", this.refdoctor);
       formData.append("docfavourname", this.refinfavourdoctor);
@@ -524,145 +548,133 @@ export default {
       formData.append("doctoremail", this.refdocemail);
       formData.append("doctorpan", this.refdocpan);
       formData.append("doctorgstin", this.refdocgstin);
-      formData.append("doctoragreed", this.refdocagreed);
+      formData.append("doctoragreedop", this.refdocagreedop);
+      formData.append("doctoragreedip", this.refdocagreedip);
       formData.append("doctoracc", this.refdocacc);
       formData.append("doctorIFSC", this.refdocaccifsc);
       formData.append("doctorbankbranch", this.refdocaccbank);
       formData.append("username", normalusername.name);
 
-
       formData.append("fileagreementupload", this.fileagreementupload);
       formData.append("filepanupload", this.filepanupload);
       formData.append("filepassbookupload", this.filepassbookupload);
 
-      console.log(Array.from(formData));
-
-      console.log("---------------------------------------------------");
-      console.log("doctortype : " + this.refType);
-      console.log("doctname : " + this.refdoctor);
-      console.log("infavour : " + this.refinfavourdoctor);
-      console.log("paymennt : " + this.Setpayment);
-      console.log("doc branch : " + this.refdocbranch);
-      console.log("doc contact : " + this.refdoccontact);
-      console.log("doc email : " + this.refdocemail);
-      console.log("doc pan: " + this.refdocpan);
-      console.log("doc gstin : " + this.refdocgstin);
-      console.log("doc agreedperc : " + this.refdocagreed);
-      console.log("doc acc :" + this.refdocacc);
-      console.log("doc acc ifsc :" + this.refdocaccifsc);
-      console.log("doc acc bank :" + this.refdocaccbank);
-      console.log("Created user :" + normalusername.name);
-      console.log("---------------------------------------------------");
 
 
-      console.log(this.fileagreementupload);
-      console.log(this.filepanupload);
-      console.log(this.filepassbookupload);
-
-      if ((this.refType == null) || (this.refType == '')) {
-        alert("please enter DRT type")
+      if (this.refType == null || this.refType == "") {
+        alert("please enter DRT type");
         return false;
       }
-      if ((this.refdoctor == null) || (this.refdoctor == '')) {
-        alert("please enter Doctor name")
+      if (this.refdoctor == null || this.refdoctor == "") {
+        alert("please enter Doctor name");
         return false;
       }
-      if ((this.refdocbranch == null) || (this.refdocbranch == '')) {
-        alert("please enter Doctor branch")
+      if (this.refdocbranch == null || this.refdocbranch == "") {
+        alert("please enter Doctor branch");
         return false;
       }
 
-      if ((this.refdocpan == null) || (this.refdocpan == '')) {
-        alert("please enter Doctor Pan number")
+      if (this.refdocpan == null || this.refdocpan == "") {
+        alert("please enter Doctor Pan number");
         return false;
       }
-      if ((this.refdocagreed == null) || (this.refdocagreed == '')) {
-        alert("please enter Agreed Percentage")
+      if (this.refdocagreedop == null || this.refdocagreedop == "" ||this.refdocagreedip == null || this.refdocagreedip == "") {
+        alert("please enter Op or Ip Agreed Percentage");
         return false;
       }
-      if ((this.refdoccontact.length > 10) || (this.refdoccontact.length < 10)) {
-        alert("please enter 10 Digit mobile number ")
+      if (this.refdoccontact.length > 10 || this.refdoccontact.length < 10) {
+        alert("please enter 10 Digit mobile number ");
         return false;
       }
-      if ((this.refdocpan.length > 10) || (this.refdocpan.length < 10)) {
+      if (this.refdocpan.length > 10 || this.checkPandata==true) {
         if (this.refdocpan == "No Pan") {
-          console.log(this.refdocpan);
         } else {
-          alert("please enter 10 Digit Pan number")
+          alert("please enter 10 Digit Pan number");
           return false;
         }
-
       }
-      if ((this.refdocagreed > 100) || (this.refdocagreed < 0)) {
-        alert("please enter valid Percentage")
+      if (this.refdocagreedop > 100 || this.refdocagreedop < 0) {
+        alert("please enter valid Op Percentage");
         return false;
       }
-      if ((this.refdocagreed = null) || (this.refdocagreed = '')) {
-        alert("please enter Agreed Percentage")
+      if (this.refdocagreedip > 100 || this.refdocagreedip < 0) {
+        alert("please enter valid Ip Percentage");
+        return false;
+      }
+      if ((this.refdocagreedop = null) || (this.refdocagreedop = "")) {
+        alert("please enter Op Percentage");
         return false;
       }
       this.loading = true;
       this.isLoading = true;
-   
-      this.$http.post(`${process.env.API_URL}/api-uploaddoctor`, formData, {}).then(res => {
-        this.isLoading = false;
 
-
-        if (res.data.doctordatainserted === true) {
-          alert(" Doctor name addtion is sent for approval")
-          this.refdoctor = null;
-          this.refdocbranch = null;
-          this.refdoccontact = null;
-          this.refdocemail = null;
-          this.refdocpan = null;
-          this.refdocgstin = null;
-          this.refdocagreed = null;
-          this.refdocacc = null;
-          this.refdocaccifsc = null;
-          this.refdocaccbank = null;
-          this.refinfavourdoctor = null
-          this.Setpayment = null;
-          formData = null;
-          this.newdoctor = false;
-          this.$refs.agreementupload.files[0] = null;
-          this.$refs.agreementupload.files[0] = '';
-          console.log(formData);
-        } else {
-
-          alert(res.data.doctordatainserted);
+      this.$http
+        .post(`${process.env.API_URL}/api-uploaddoctor`, formData, {})
+        .then(res => {
           this.isLoading = false;
-          return false;
-        }
 
-      })
-
+          if (res.data.doctordatainserted === true) {
+            alert(" Doctor name addtion is sent for approval");
+            this.refdoctor = null;
+            this.refdocbranch = null;
+            this.refdoccontact = null;
+            this.refdocemail = null;
+            this.refdocpan = null;
+            this.refdocgstin = null;
+            this.refdocagreedop = null;
+            this.refdocagreedip = null;
+            this.refdocacc = null;
+            this.refdocaccifsc = null;
+            this.refdocaccbank = null;
+            this.refinfavourdoctor = null;
+            this.Setpayment = null;
+            formData = null;
+            this.newdoctor = false;
+            this.$refs.agreementupload.files[0] = null;
+            this.$refs.agreementupload.files[0] = "";
+            this.checkPandata=false
+            console.log(formData);
+          } else {
+            alert(res.data.doctordatainserted);
+            this.checkPandata=false
+            this.isLoading = false;
+            return false;
+          }
+        });
     },
     loadbranch() {
       let userid = JSON.parse(sessionStorage.getItem("normal_user"));
       this.SetBranch = [];
       this.branch = [];
-      var arr1 = [{
-        shortCode: 'Select All',
-        text: ''
-      }];
+      var arr1 = [
+        {
+          shortCode: "Select All",
+          text: ""
+        }
+      ];
       this.axios
 
-        .get(`https://mis.dragarwal.com/api-chbranch/${userid.userName}`).then(response => {
+        .get(`https://mis.dragarwal.com/api-chbranch/${userid.userName}`)
+        .then(response => {
           this.branch = arr1.concat(response.data);
           console.log(this.branch);
-        })
-
-
+        });
     },
     Panrules(b) {
-
-      if ((this.refdocpan.length == 2) || (this.refdocpan == 'NA')) {
-        this.refdocpan = 'No Pan'
-        return true
+      var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+      if(!(regpan.test(b))){
+        alert("Pan data not matching")
+        this.checkPandata=true
       }
-
-
+      else {
+        this.checkPandata=false
+      }
+      if (this.refdocpan.length == 2 || this.refdocpan == "NA") {
+        this.refdocpan = "No Pan";
+        this.checkPandata=false
+        return true;
+      }
     }
   }
-}
+};
 </script>

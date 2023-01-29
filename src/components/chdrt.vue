@@ -81,10 +81,10 @@
                   <td class="text-xs-left">{{ props.item.PATIENT_NAME }}</td>
                   <td class="text-xs-left">{{ numberformat(props.item.Bill_TOTAL_AMOUNT) }}</td>
                   <td class="text-xs-left">{{ props.item.status }}</td>
-                  <td class="text-xs-right">
+                  <td class="text-xs-right" v-if="props.item.Bill_TOTAL_AMOUNT>0 && props.item.Bill_DISCOUNT_AMOUNT==0 ">
 
                     <v-layout row justify-center>
-                      <v-dialog v-model="dialog" persistent max-width="800px" lazy absolute>
+                      <v-dialog v-model="dialog"  persistent max-width="800px" lazy absolute>
                         <v-btn slot="activator" small fab color="success" @click="rowClick1(props.item)">
                           <v-icon>edit</v-icon>
                         </v-btn>
@@ -175,8 +175,11 @@
         <v-flex xs12 sm6 md4>
           <v-text-field v-model="panno" clearable label="Pan No" disabled></v-text-field>
         </v-flex>
-        <v-flex xs12 sm6 md4>
-          <v-text-field type='number' disabled v-model="aggcommission" label="Agreed %" required></v-text-field>
+        <v-flex xs12 sm8 md2>
+          <v-text-field type='number' disabled v-model="aggcommission_op" label="OP %" required></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm8 md2>
+          <v-text-field type='number' disabled v-model="aggcommission_ip" label="IP %" required></v-text-field>
         </v-flex>
         <v-flex xs12 sm6>
           <v-text-field type="text" clearable v-model="drtcommission" label="DRT %" @change="drtcommissionvalue"
@@ -209,7 +212,7 @@
     <v-spacer></v-spacer>
     <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
     <v-btn color="blue darken-1" v-model='buttonstatus' v-if="approval" flat
-      @click="apiinsertbill(billid, netamount, aggcommission, drtcommission, drtamount, drtid, drtcategory, drtcomments, buttonstatus, $event,selectDRTType)">
+      @click="apiinsertbill(billid, netamount, aggcommission_op,aggcommission_ip, drtcommission, drtamount, drtid, drtcategory, drtcomments, buttonstatus, $event,selectDRTType)">
       Submit</v-btn>
 
   </v-card-actions>
@@ -218,13 +221,16 @@
 
 
   </v-dialog>
+
   </v-layout>
 
   </td>
-  </tr>
+  <td  class="text-xs-right" v-else-if=" props.item.Bill_DISCOUNT_AMOUNT>0"> Discounted Bill</td>
+  <td  class="text-xs-right" v-else-if=" props.item.Bill_TOTAL_AMOUNT<0"> Cancelled</td>
+ 
+</tr>
 </template>
 </v-data-table>
-
 </template>
 
 
@@ -315,7 +321,8 @@ export default {
     billid: '',
     drtid: '',
     drtcomments: '',
-    aggcommission: '',
+    aggcommission_op: '',
+    aggcommission_ip: '',
     drtcomments: '',
     drtcommission: '',
     drtbilldate: '',
@@ -332,7 +339,8 @@ export default {
     panno: [],
     billedbranch: [],
     drtpertcent: [],
-    aggcommission: [],
+    aggcommission_op: [],
+    aggcommission_ip: [],
     commission: [],
     infavourof: [],
     paymenttype: [],
@@ -610,7 +618,6 @@ export default {
     rowClick1(b) {
       this.drt = [];
       this.billid = b.EXTERNAL_ID;
-      console.log(this.billid);
       this.approval = true;
       this.isLoading = true;
       this.gstin = '';
@@ -621,22 +628,33 @@ export default {
       // })
       console.log("drt id : " + this.drtid);
       console.log("drt : " + this.drt);
-      this.aggcommission = '',
+      this.aggcommission_op = '',
         this.commission = '';
       this.drtdetail = '';
       this.drtid = '';
       this.drtcusid = '';
       this.drtcomments = '';
-      this.aggcommission = '';
+      this.aggcommission_ip = '';
       this.drtamount = '';
       this.Billno = '';
       this.billedbranch = '';
-      this.axios
+      this.axios.post(`${process.env.API_URL}/api-billdrtcheck`,{
+        branch:b.BILLED,
+        billno:b.BILLNO
+      }).then(response=>{
+
+        if(response.data[0].cancel==1){
+          alert("The mentioned bill has cancelled entry")
+          this.isLoading = false;
+          this.dialog= false
+        }
+        else {
+          this.axios
         .get(`${process.env.API_URL}/api-billdrt/${this.billid}`).then(response => {
 
           this.drtbilldetail = response.data;
           this.axios
-            .get(`${process.env.API_URL}/api-drt`).then(response => {
+            .get(`${process.env.API_URL}/api-drt/${this.SetBranch}`).then(response => {
               this.drt = response.data;
               console.log(this.drt);
               // this.isLoading = true;
@@ -644,7 +662,6 @@ export default {
           // this.isLoading = false;
 
 
-          console.log(this.drtbilldetail);
           this.Name = this.drtbilldetail[0]["PATIENT_NAME"]
           this.Mrn = this.drtbilldetail[0]["MRN"];
           this.vdate = this.drtbilldetail[0]["TRANSACTION_DATE"];
@@ -685,6 +702,9 @@ export default {
           this.isLoading = false;
 
         });
+        }
+      })
+ 
 
     },
 
@@ -702,7 +722,8 @@ export default {
           console.log(this.drtdetail[0]["GSTIN"]);
           this.gstin = this.drtdetail[0]["GSTIN"]
           this.panno = this.drtdetail[0]["Pan_no"]
-          this.aggcommission = this.drtdetail[0]["Percentage"]
+          this.aggcommission_op = this.drtdetail[0]["OP_Percentage"]
+          this.aggcommission_ip = this.drtdetail[0]["IP_Percentage"]
           this.commission = this.drtdetail[0]["Percentage"]
           this.infavourof = this.drtdetail[0]["Infavour_of"]
           this.paymenttype = this.drtdetail[0]["Payment_type"]
