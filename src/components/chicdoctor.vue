@@ -173,11 +173,15 @@
                     </v-btn>
 
                   </td>
+                  <td class="text-xs-right" v-else="props.item.Agreement_d === 'NA'">
+                  </td>
                   <td class="text-xs-right" v-if="!(props.item.Pan_d === 'NA')">
                     <v-btn slot="activator" small fab color="primary" @click="downloadpan(props.item.Pan_d)">
                       <v-icon>cloud_download</v-icon>
                     </v-btn>
 
+                  </td>
+                  <td class="text-xs-right" v-else="props.item.Pan_d === 'NA'">
                   </td>
                   <td class="text-xs-right" v-if="!(props.item.Passbook_d === 'NA')">
                     <v-btn slot="activator" small fab color="primary" @click="downloadpassbook(props.item.Passbook_d)">
@@ -185,7 +189,8 @@
                     </v-btn>
 
                   </td>
-
+                  <td class="text-xs-right" v-else="props.item.Passbook_d === 'NA'">
+                  </td>
                 </tr>
               </template>
             </v-data-table>
@@ -367,7 +372,7 @@ export default {
     refdocpan: "",
     refdocgstin: "",
     refdocagreedop: "",
-    refdocagreedopip:"",
+    refdocagreedip:"",
     refdocacc: "",
     refdocaccifsc: "",
     refdocaccbank: "",
@@ -578,8 +583,8 @@ export default {
         alert("please enter Doctor Pan number");
         return false;
       }
-      if (this.refdocagreedop == null || this.refdocagreedop == "" ||this.refdocagreedip == null || this.refdocagreedip == "") {
-        alert("please enter Op or Ip Agreed Percentage");
+      if (this.refdocagreedop == null || this.refdocagreedop == "") {
+        alert("please enter Op Percentage");
         return false;
       }
       if (this.refdoccontact.length > 10 || this.refdoccontact.length < 10) {

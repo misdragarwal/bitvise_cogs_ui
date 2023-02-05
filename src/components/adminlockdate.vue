@@ -5,7 +5,7 @@
                 <v-flex xs12 sm10 offset-sm1 md10 offest-md1 lg10 offset-lg1>
                     <v-toolbar flat color="grey lighten-2">
                         >
-                        <v-toolbar-title>DRT doctors cut off date </v-toolbar-title>
+                        <v-toolbar-title> DRT doctors cut off date </v-toolbar-title>
                         <v-spacer></v-spacer>
                     </v-toolbar>
                     <loading :active.sync="isLoading" :is-full-page="fullPage" color="#7f0000" loader="bars"></loading>

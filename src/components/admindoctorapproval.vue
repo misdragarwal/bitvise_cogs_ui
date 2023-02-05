@@ -47,7 +47,8 @@
 				<td class="text-xs-left">{{ props.item.Branch }}</td>
                 <td class="text-xs-left">{{ props.item.Name }}</td>
                 <td class="text-xs-left">{{ props.item.Infavour_of }}</td>
-                <td class="text-xs-left">{{ props.item.Percentage }}</td>
+                <td class="text-xs-left">{{ props.item.OP_Percentage }}</td>
+                <td class="text-xs-left">{{ props.item.IP_Percentage }}</td>
                 <td class="text-xs-left">{{ props.item.Pan_no }}</td>
                 <td class="text-xs-left">{{ props.item.Bank_name }}</td>
                 <td class="text-xs-left">{{ props.item.Account_no }}</td>
@@ -144,108 +145,112 @@
 
 <script>
 import moment from "moment";
-import {
-  serverBus
-} from "@/main";
+import { serverBus } from "@/main";
 
 export default {
   data: () => ({
-    branch: [{
-      shortCode: 'Select All',
-      text: 'All'
-    }],
-    currentstatus: [{
+    branch: [
+      {
+        shortCode: "Select All",
+        text: "All"
+      }
+    ],
+    currentstatus: [
+      {
         shortCode: "Select All",
         text: "All"
       },
       {
         shortCode: "Pending",
-        text: "-1",
+        text: "-1"
       },
       {
         shortCode: "Approved",
-        text: "1",
+        text: "1"
       },
       {
         shortCode: "Cancelled",
-        text: "-2",
-      },
+        text: "-2"
+      }
     ],
     headers: [
-	  {
-        text: 'Created Date',
-        value: 'Created_date'
+      {
+        text: "Created Date",
+        value: "Created_date"
       },
-	  {
-        text: 'Status',
-        align: 'left',
+      {
+        text: "Status",
+        align: "left",
         sortable: false,
-        value: 'Status'
-
-      },
-	  {
-        text: 'Approve/Reject',
-        value: 'Approved_date'
+        value: "Status"
       },
       {
-        text: 'Branch',
-        value: 'Branch'
+        text: "Approve/Reject",
+        value: "Approved_date"
       },
       {
-        text: 'Name',
-        value: 'Name'
+        text: "Branch",
+        value: "Branch"
       },
       {
-        text: 'Infavour of',
-        value: 'Infavour_of'
+        text: "Name",
+        value: "Name"
       },
       {
-        text: 'Agreed %',
-        value: 'Percentage'
+        text: "Infavour of",
+        value: "Infavour_of"
       },
       {
-        text: 'Pan no',
-        value: 'Pan_no'
+        text: "OP %",
+        value: "OP_Percentage"
       },
       {
-        text: 'Bank Name',
-        value: 'Bank_name'
+        text: "IP %",
+        value: "IP_Percentage"
       },
       {
-        text: 'Account no',
-        value: 'Account_no'
+        text: "Pan no",
+        value: "Pan_no"
       },
       {
-        text: 'Bank IFSC',
-        value: 'Bank_ifsc'
+        text: "Bank Name",
+        value: "Bank_name"
       },
       {
-        text: 'Payment type',
-        value: 'Payment_type'
+        text: "Account no",
+        value: "Account_no"
       },
       {
-        text: 'Agreement Available',
-        value: 'Payment_type'
+        text: "Bank IFSC",
+        value: "Bank_ifsc"
       },
       {
-        text: 'Agreement',
-        value: 'Agreement_url'
+        text: "Payment type",
+        value: "Payment_type"
       },
       {
-        text: 'Pan',
-        value: 'Pan_url'
+        text: "Agreement Available",
+        value: "Payment_type"
       },
       {
-        text: 'Passbook',
-        value: 'Passbook_url'
+        text: "Agreement",
+        value: "Agreement_url"
       },
       {
-        text: 'Approve',
-        value: 'Approve'
+        text: "Pan",
+        value: "Pan_url"
       },
       {
-        text: 'Reject',
-        value: 'Reject'
+        text: "Passbook",
+        value: "Passbook_url"
+      },
+      {
+        text: "Approve",
+        value: "Approve"
+      },
+      {
+        text: "Reject",
+        value: "Reject"
       }
     ],
     isLoading: false,
@@ -253,221 +258,213 @@ export default {
     findoctorlist: null,
     fromdate: null,
     todate: null,
-    search: '',
+    search: "",
     selected: [],
-    refdoctor: '',
-    refinfavourdoctor: '',
-    refdocbranch: '',
-    refdoccontact: '',
-    refdocemail: '',
-    refdocpan: '',
-    refdocgstin: '',
+    refdoctor: "",
+    refinfavourdoctor: "",
+    refdocbranch: "",
+    refdoccontact: "",
+    refdocemail: "",
+    refdocpan: "",
+    refdocgstin: "",
     refdocagreed: "",
-    refdocacc: '',
-    refdocaccifsc: '',
-    refdocaccbank: '',
-    agreementupload: '',
-    panupload: '',
-    passbookupload: '',
+    refdocacc: "",
+    refdocaccifsc: "",
+    refdocaccbank: "",
+    agreementupload: "",
+    panupload: "",
+    passbookupload: "",
     json_data: null,
-    json_meta: [{
-      key: "charset",
-      value: "utf-8"
-    }],
+    json_meta: [
+      {
+        key: "charset",
+        value: "utf-8"
+      }
+    ],
     json_fields: {
-      "Branch": "Branch",
-      "Name":"Name",
-      "Infavour of":"Infavour_of",
-      "Agreed %":"Percentage",
-      "Pan no":"Pan_no",
-      "Bank Name":"Bank_name",
-      "Account no":"Accnt_no",
-      "Bank IFSC":"Bank_ifsc",
-      "Payment type":"Payment_type",
-      "Date": "Approved_date",
-
-        },
+      Branch: "Branch",
+      Name: "Name",
+      "Infavour of": "Infavour_of",
+      "Agreed %": "Percentage",
+      "Pan no": "Pan_no",
+      "Bank Name": "Bank_name",
+      "Account no": "Accnt_no",
+      "Bank IFSC": "Bank_ifsc",
+      "Payment type": "Payment_type",
+      Date: "Approved_date"
+    },
     fileName: null,
-        dialogcancel: {},
-        fincomments:'',
+    dialogcancel: {},
+    fincomments: ""
   }),
   mounted() {
     this.loadbranch();
   },
   filters: {
-	dateformat (date) {
-	
-	  console.log(date);
-	  if(date!=null){
-		return moment(date).format("YYYY-MM-DD");
-	  }else{
-		return '';
-	  }
+    dateformat(date) {
+      console.log(date);
+      if (date != null) {
+        return moment(date).format("YYYY-MM-DD");
+      } else {
+        return "";
+      }
     }
- },
+  },
 
   methods: {
     loadbranch() {
       let userid = JSON.parse(sessionStorage.getItem("fin_user"));
       this.SetBranch = [];
       this.branch = [];
-      var arr1 = [{
-        shortCode: 'Select All',
-        text: 'All'
-      }];
+      var arr1 = [
+        {
+          shortCode: "Select All",
+          text: "All"
+        }
+      ];
       this.axios
 
-        //.get(`https://mis.dragarwal.com/api-finbranch/${userid.userName}`).then(response => {
-		.get(`https://mis.dragarwal.com/api-finbranch/${userid.userName}`).then(response => {
+        .get(`${process.env.API_URL}/api-finbranch/${userid.userName}`)
+        .then(response => {
           this.branch = arr1.concat(response.data);
           console.log(this.branch);
-        })
+        });
     },
     downloadagreement(Agreement_d) {
-
       this.axios({
-        //url: `https://mis.dragarwal.com/api-download/${Agreement_d}`,
-		url: `https://mis.dragarwal.com/api-download/${Agreement_d}`,
-        method: 'GET',
-        responseType: 'blob',
+        url: `${process.env.API_URL}/api-download/${Agreement_d}`,
+        method: "GET",
+        responseType: "blob"
       }).then(response => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement('a');
+        var fileLink = document.createElement("a");
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', Agreement_d);
+        fileLink.setAttribute("download", Agreement_d);
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      })
-
+      });
     },
     downloadpan(Pan_d) {
-
       this.axios({
-        //url: `https://mis.dragarwal.com/api-download/${Pan_d}`,
-		url: `https://mis.dragarwal.com/api-download/${Pan_d}`,
-        method: 'GET',
-        responseType: 'blob',
+        url: `${process.env.API_URL}/api-download/${Pan_d}`,
+        method: "GET",
+        responseType: "blob"
       }).then(response => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement('a');
+        var fileLink = document.createElement("a");
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', Pan_d);
+        fileLink.setAttribute("download", Pan_d);
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      })
-
+      });
     },
     downloadpassbook(Passbook_d) {
-
       this.axios({
-        //url: `https://mis.dragarwal.com/api-download/${Passbook_d}`,
-		url: `https://mis.dragarwal.com/api-download/${Passbook_d}`,
+        url: `${process.env.API_URL}/api-download/${Passbook_d}`,
 
-        method: 'GET',
-        responseType: 'blob',
+        method: "GET",
+        responseType: "blob"
       }).then(response => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement('a');
+        var fileLink = document.createElement("a");
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', Passbook_d);
+        fileLink.setAttribute("download", Passbook_d);
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      })
-
+      });
     },
     apiapproveicdoctorlist(Setstatus, SetBranch) {
-
-      if ((this.Setstatus == null) || (this.Setstatus == '')) {
-        alert("Please select the status type")
+      if (this.Setstatus == null || this.Setstatus == "") {
+        alert("Please select the status type");
         return false;
       }
-      if ((this.SetBranch == null) || (this.SetBranch == '')) {
-        alert("Please select the Branch")
+      if (this.SetBranch == null || this.SetBranch == "") {
+        alert("Please select the Branch");
         return false;
       }
       this.isLoading = true;
-      //this.$http.get(`https://mis.dragarwal.com/api-findoctorlist/${this.Setstatus}/${this.SetBranch}`)
-	  this.$http.get(`https://mis.dragarwal.com/api-findoctorlist/${this.Setstatus}/${this.SetBranch}`)
+      this.$http
+        .get(
+          `${process.env.API_URL}/api-findoctorlist/${this.Setstatus}/${
+            this.SetBranch
+          }`
+        )
         .then(response => {
-          console.log(response.data);
-          this.processdatalist(response.data)
+          this.processdatalist(response.data);
           this.isLoading = false;
-        })
-        this.fileName=`Doctor_Report.csv`;
+        });
+      this.fileName = `Doctor_Report.csv`;
     },
     processdatalist(data) {
       this.findoctorlist = data.result["findata"];
-      console.log(this.findoctorlist);
       this.show = true;
     },
     rowApprove(row) {
-      let fin_id = '';
+      let fin_id = "";
 
       this.isLoading = true;
-      //this.$http.post(`https://mis.dragarwal.com/api-doctorapprove/`, {
-	  this.$http.post(`https://mis.dragarwal.com/api-doctorapprove/`, {
-        fin_id: row.ID,
-		branch: row.Branch,
-		docname: row.Name,
-      }).then(response => {
-        this.isLoading = false;
-        alert("Approved");
-        console.log("this.Setstatus : " + this.Setstatus);
-        console.log("this.SetBranch :" + this.SetBranch);
-        //this.$http.get(`https://mis.dragarwal.com/api-findoctorlist/${this.Setstatus}/${this.SetBranch}`)
-		this.$http.get(`https://mis.dragarwal.com/api-findoctorlist/${this.Setstatus}/${this.SetBranch}`)
-          .then(response => {
-            console.log(response.data);
-            this.processdatalist(response.data)
-            this.isLoading = false;
-          })
-
-
-      })
-
+      this.$http
+        .post(`${process.env.API_URL}/api-doctorapprove`, {
+          fin_id: row.ID,
+          branch: row.Branch,
+          docname: row.Name
+        })
+        .then(response => {
+          this.isLoading = false;
+          alert("Approved");
+          this.$http
+            .get(
+              `${process.env.API_URL}/api-findoctorlist/${this.Setstatus}/${
+                this.SetBranch
+              }`
+            )
+            .then(response => {
+              this.processdatalist(response.data);
+              this.isLoading = false;
+            });
+        });
     },
-    rowDecline(row,fincomments) {
-      let fin_id = '';
+    rowDecline(row, fincomments) {
+      let fin_id = "";
       this.isLoading = true;
-      //this.$http.post(`https://mis.dragarwal.com/api-doctorreject/`, {
-	  this.$http.post(` https://mis.dragarwal.com/api-doctorreject/`, {
-        fin_id: row.ID,
-        fin_comm:fincomments,
-	branch: row.Branch,
-	docname: row.Name,
-
-      }).then(response => {
-      
-        alert("cancelled");
-        console.log("this.Setstatus : " + this.Setstatus);
-        console.log("this.SetBranch :" + this.SetBranch);
-        this.fincomments='';
-        //this.$http.get(`https://mis.dragarwal.com/api-findoctorlist/${this.Setstatus}/${this.SetBranch}`)
-		      this.$http.get(`https://mis.dragarwal.com/api-findoctorlist/${this.Setstatus}/${this.SetBranch}`)
-          .then(response => {
-            console.log(response.data);
-            this.processdatalist(response.data)
-            this.isLoading = false;
-          })
-      })
-    }
-    ,downloadExcelDr() {
+      this.$http
+        .post(` ${process.env.API_URL}/api-doctorreject`, {
+          fin_id: row.ID,
+          fin_comm: fincomments,
+          branch: row.Branch,
+          docname: row.Name
+        })
+        .then(response => {
+          alert("cancelled");
+          this.fincomments = "";
+          this.$http
+            .get(
+              `${process.env.API_URL}/api-findoctorlist/${this.Setstatus}/${
+                this.SetBranch
+              }`
+            )
+            .then(response => {
+            this.processdatalist(response.data);
+              this.isLoading = false;
+            });
+        });
+    },
+    downloadExcelDr() {
       let tempDataArr = [];
       if (this.fileDate !== null) {
-        tempDataArr = this.findoctorlist
+        tempDataArr = this.findoctorlist;
 
         return tempDataArr;
       } else {
         return null;
       }
-    },
+    }
   }
-
-}
+};
 </script>

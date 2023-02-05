@@ -108,7 +108,6 @@
                   <td class="text-xs-left">{{ props.item.Category }}</td>
                   <td class="text-xs-left">{{ props.item.REFERRALTYPENAME }}</td>
                   <td class="text-xs-left">{{ props.item.Reference }}</td>
-                  <!-- <td class="text-xs-left">{{props.item.REFERREDBYNAME }}</td> -->
                   <td class="text-xs-left">{{ props.item.DRTNAME }}</td>
                   <td class="text-xs-left">{{ props.item.Aggreed_percentage_value }}</td>
                   <td class="text-xs-left">{{ props.item.Drt_percentage_value }}</td>
@@ -134,12 +133,6 @@
                   <td class="text-xs-right" v-else="props.item.drtApproval_status==='Approved'">
                   </td>
 
-                  <!--
-                  <td class="text-xs-right" v-if="props.item.drtApproval_status==='Pending'">
-                    <v-btn slot="activator" small fab color="red" @click="rowDecline(props.item)">
-                      <v-icon>fas fa-times</v-icon>
-                    </v-btn>
-                  </td> -->
                   <td class="text-xs-right" v-if="props.item.drtApproval_status === 'Pending'">
 
                     <v-btn slot="activator" small fab @click.stop="$set(dialogcancel, props.item.Bill_no, true)"
@@ -423,12 +416,12 @@
   
   
 <script>
-import adminlockdate from "@/components/adminlockdate.vue"
+import adminlockdate from "@/components/adminlockdate.vue";
 import admindoctorapproval from "@/components/admindoctorapproval";
 import moment from "moment";
 import { serverBus } from "../main";
 
-var curday = function (sp) {
+var curday = function(sp) {
   var today = new Date();
   var dd = today.getDate();
   var mm = today.getMonth() + 1; //As January is 0.
@@ -441,7 +434,7 @@ var curday = function (sp) {
   return yyyy + sp + mm + sp + dd;
 };
 
-var expensecurmonth = function (sp) {
+var expensecurmonth = function(sp) {
   var today = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000);
 
   var dd = today.getDate();
@@ -453,16 +446,6 @@ var expensecurmonth = function (sp) {
   else if (mm >= 10) {
     mm;
   }
-  console.log(dd + "-" + mm + "-" + yyyy);
-  //
-  // var dd = today.getDate();
-  // var mm = (today.getMonth() + 1) - 2; //As January is 0.
-  // var yyyy = today.getFullYear();
-  //
-  //
-  // if (dd < 10) dd = '0' + dd;
-  // if (mm < 10 && mm >= 0) mm = '0' + mm;
-  // else if (mm < 0) mm = '11';
   return yyyy + sp + mm + sp + dd;
 };
 
@@ -561,11 +544,11 @@ export default {
       "Sch Name": "SCH_Name",
       "Sch Branch": "SCH_Branch",
       "Expense date": "Expense_date",
-      "UTR_No": "UTR_No",
-      "Pr_Date": "Process_DateTime",
-      "Status": "Status",
-      'Slip': "Referal_slip",
-      "message":"Final_Message"
+      UTR_No: "UTR_No",
+      Pr_Date: "Process_DateTime",
+      Status: "Status",
+      Slip: "Referal_slip",
+      message: "Final_Message"
     },
     fileName: null,
     headers: [
@@ -612,10 +595,6 @@ export default {
         text: "DRT Name",
         value: "DRT Name"
       },
-      // {
-      //   text: 'Bill DRT Name',
-      //   value: 'DRT Name'
-      // },
       {
         text: "Agreed %",
         value: "Aggreed_percentage_value"
@@ -673,8 +652,6 @@ export default {
         text: "message",
         value: ""
       }
-
-
     ],
     category: [
       {
@@ -819,11 +796,9 @@ export default {
       });
     },
     loadfixdate() {
-      this.axios
-        .get(`${process.env.API_URL}/api-getfixdate`)
-        .then(response => {
-          this.fix_dte = response.data.fixeddate[0].fix_date;
-        });
+      this.axios.get(`${process.env.API_URL}/api-getfixdate`).then(response => {
+        this.fix_dte = response.data.fixeddate[0].fix_date;
+      });
     },
     rowClick(id) {
       // alert(id);
@@ -876,7 +851,7 @@ export default {
       let seconds = date_ob.getSeconds();
       let mmseconds = date_ob.getUTCMilliseconds();
 
-      var unique_ID = (row.Bill_no).split("/").join('');
+      var unique_ID = row.Bill_no.split("/").join("");
       if (row.Expense_date == "" || row.Expense_date == null) {
         console.log("hit in empty expense");
         expense_date = new Date(row.bill_date);
@@ -898,28 +873,21 @@ export default {
       }
 
       let normalusername = JSON.parse(sessionStorage.getItem("fin_user"));
-      console.log(row,"---------->");
       this.isLoading = true;
       const requestOptions = {
-                headers: {
-                    "Content-Type": "application/json",
-                    "token": `${process.env.API_KEY}`
-                },
-            };
+        headers: {
+          "Content-Type": "application/json",
+          token: `${process.env.API_KEY}`
+        }
+      };
       this.$http
-        /*.post(`${process.env.API_URL}/api-finbillinsert`, {
-          sch_bill_id: row.id,
-          sch_id: normalusername.name,
-          sch_expensedate: expensedate,
-        }).then(response => {
-        */
         .post(`${process.env.API_URL}/api-finbillinsert`, {
           sch_bill_id: row.id,
           sch_id: normalusername.name,
           sch_expensedate: expensedate,
           uniqueID: `${unique_ID}${year}${month}${date}${hours}${minutes}${seconds}${mmseconds}`,
-          drtid:row.Drt_id,
-          drtamount:row.Drt_amount
+          drtid: row.Drt_id,
+          drtamount: row.Drt_amount
         })
         .then(response => {
           this.isLoading = false;
@@ -940,11 +908,11 @@ export default {
             this.isLoading = true;
             this.$http
 
-              //    .get(`https://scm.dragarwal.com/api-opticals-super/${date}`)
-              //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
               .get(
-                `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
-                }/${this.datetype}/${status}/${branch}/${normalusername.name}`,requestOptions
+                `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                  this.todate
+                }/${this.datetype}/${status}/${branch}/${normalusername.name}`,
+                requestOptions
               )
               .then(response => {
                 this.processDatabillsch(response.data);
@@ -966,9 +934,9 @@ export default {
             this.loading = true;
             this.isLoading = true;
             this.$http
-              //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
               .get(
-                `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                  this.todate
                 }/${this.datetype}/${status}/${branch}/${normalusername.name}`
               )
               .then(response => {
@@ -985,9 +953,9 @@ export default {
             this.isLoading = true;
             this.$http
 
-              //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
               .get(
-                `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                  this.todate
                 }/${this.datetype}/${status}/${branch}/${normalusername.name}`
               )
               .then(response => {
@@ -1040,10 +1008,9 @@ export default {
               this.isLoading = true;
               this.$http
 
-                //    .get(`https://scm.dragarwal.com/api-opticals-super/${date}`)
-                //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
                 .get(
-                  `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                  `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                    this.todate
                   }/${this.datetype}/${status}/${branch}/${normalusername.name}`
                 )
                 .then(response => {
@@ -1070,9 +1037,9 @@ export default {
               this.loading = true;
               this.isLoading = true;
               this.$http
-                //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
                 .get(
-                  `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                  `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                    this.todate
                   }/${this.datetype}/${status}/${branch}/${normalusername.name}`
                 )
                 .then(response => {
@@ -1092,9 +1059,9 @@ export default {
               this.isLoading = true;
               this.$http
 
-                //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
                 .get(
-                  `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                  `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                    this.todate
                   }/${this.datetype}/${status}/${branch}/${normalusername.name}`
                 )
                 .then(response => {
@@ -1113,7 +1080,6 @@ export default {
       let normalusername = JSON.parse(sessionStorage.getItem("fin_user"));
       this.isLoading = true;
       this.$http
-        //.post(`${process.env.API_URL}/api-finbillexpenseupdate`, {
         .post(`${process.env.API_URL}/api-finbillexpenseupdate`, {
           sch_bill_id: row.id,
           sch_id: normalusername.name,
@@ -1140,10 +1106,9 @@ export default {
             this.isLoading = true;
             this.$http
 
-              //    .get(`https://scm.dragarwal.com/api-opticals-super/${date}`)
-              //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
               .get(
-                `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                  this.todate
                 }/${this.datetype}/${status}/${branch}/${normalusername.name}`
               )
               .then(response => {
@@ -1166,9 +1131,9 @@ export default {
             this.loading = true;
             this.isLoading = true;
             this.$http
-              //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
               .get(
-                `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                  this.todate
                 }/${this.datetype}/${status}/${branch}/${normalusername.name}`
               )
               .then(response => {
@@ -1185,9 +1150,9 @@ export default {
             this.isLoading = true;
             this.$http
 
-              //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
               .get(
-                `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+                `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                  this.todate
                 }/${this.datetype}/${status}/${branch}/${normalusername.name}`
               )
               .then(response => {
@@ -1228,7 +1193,6 @@ export default {
         }
       ];
       this.axios
-        //  .get(`https://scm.dragarwal.com/api-branch/${selectObj}`).then(response =>{
         .get(`${process.env.API_URL}/api-finbranch/${userid.userName}`)
         .then(response => {
           this.branch = arr1.concat(response.data);
@@ -1268,15 +1232,6 @@ export default {
       let drt_comments = "";
       let drt_aggcommission = "";
       let drt_billstatus = "";
-      console.log("billid : " + this.billid);
-      console.log(" netamount : " + this.netamount);
-      console.log("commission : " + this.drtcommission);
-      console.log("drtamount : " + this.drtamount);
-      console.log("drtid : " + this.drtid);
-      console.log("drtcategory : " + this.drtcategory);
-      console.log("comments : " + this.drtcomments);
-      console.log("agg comments : " + this.aggcommission);
-      console.log("status ; " + this.buttonstatus);
 
       if (this.billid == "") {
         alert("please select DRT name");
@@ -1297,7 +1252,6 @@ export default {
         this.isLoading = true;
         this.$http
           .post(`${process.env.API_URL}/api-drtbills`, {
-            //  .post(`https://localhost:8888/api-drtbills`, {
             bill_id: billid,
             net_amount: netamount,
             drt_aggcommission: aggcommission,
@@ -1309,7 +1263,6 @@ export default {
             drt_comments: drtcomments
           })
           .then(response => {
-            console.log("response : " + response);
             this.isLoading = false;
             if (response.data.Datainserted === true) {
               alert("Drt amount sent for approval");
@@ -1384,10 +1337,9 @@ export default {
           this.isLoading = true;
           this.$http
 
-            //    .get(`https://scm.dragarwal.com/api-opticals-super/${date}`)
-            //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
             .get(
-              `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+              `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                this.todate
               }/${datetype}/${status}/${branch}/${normalusername.name}`
             )
             .then(response => {
@@ -1408,9 +1360,9 @@ export default {
           this.loading = true;
           this.isLoading = true;
           this.$http
-            //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
             .get(
-              `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+              `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                this.todate
               }/${datetype}/${status}/${branch}/${normalusername.name}`
             )
             .then(response => {
@@ -1426,10 +1378,9 @@ export default {
           this.loading = true;
           this.isLoading = true;
           this.$http
-
-            //.get(`https://scm.dragarwal.com/api-collection-super/${this.fromdate}/${this.todate}/${status}/${branch}`)
             .get(
-              `${process.env.API_URL}/api-finbills/${this.fromdate}/${this.todate
+              `${process.env.API_URL}/api-finbills/${this.fromdate}/${
+                this.todate
               }/${datetype}/${status}/${branch}/${normalusername.name}`
             )
             .then(response => {
@@ -1484,10 +1435,10 @@ export default {
           shortCode: "Expense Date",
           text: "2"
         }),
-        {
-          shortCode: "Bill Date",
-          text: "1"
-        };
+          {
+            shortCode: "Bill Date",
+            text: "1"
+          };
         this.date_type = [
           {
             shortCode: "Expense Date",
@@ -1534,7 +1485,6 @@ export default {
     },
     downloadbill(filename) {
       this.axios({
-        //url: `${process.env.API_URL}/api-bill-download/${filename}`,
         url: `${process.env.API_URL}/api-download-slip/${filename}`,
         method: "GET",
         responseType: "blob"
@@ -1600,8 +1550,8 @@ table#stickyHeader thead {
   touch-action: none;
 }
 
-.table-striped>tbody>tr:nth-child(2n + 2)>td,
-.table-striped>tbody>tr:nth-child(2n + 2)>th {
+.table-striped > tbody > tr:nth-child(2n + 2) > td,
+.table-striped > tbody > tr:nth-child(2n + 2) > th {
   background-color: #e5e5f2;
   touch-action: none;
 }
@@ -1646,4 +1596,3 @@ table#stickyHeader thead {
   -webkit-appearance: none;
 }
 </style>
-  

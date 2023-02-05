@@ -261,8 +261,7 @@ export default {
         text: 'All'
       }];
       this.axios
-        //  .get(`https://scm.dragarwal.com/api-branch/${selectObj}`).then(response =>{
-        .get(`https://mis.dragarwal.com/api-chbranch/${userid.userName}`).then(response => {
+        .get(`${process.env.API_URL}/api-chbranch/${userid.userName}`).then(response => {
           this.branch = arr1.concat(response.data);
 
         })
@@ -314,7 +313,7 @@ export default {
       console.log(normalusername);
       this.isLoading = true;
       this.axios
-        .get(`https://mis.dragarwal.com/api-submittedbills/${this.fromdate}/${datetype}/${this.SetStatus}/${this.SetBranch}/${normalusername.name}`)
+        .get(`${process.env.API_URL}/api-submittedbills/${this.fromdate}/${datetype}/${this.SetStatus}/${this.SetBranch}/${normalusername.name}`)
         .then(response => {
 
           console.log(response.data);
@@ -374,8 +373,7 @@ export default {
     },
 	downloadbill(filename) {
       this.axios({
-        //url: `https://mis.dragarwal.com/api-bill-download/${filename}`,
-        url: `https://mis.dragarwal.com/api-download-slip/${filename}`,
+        url: `${process.env.API_URL}/api-download-slip/${filename}`,
         method: 'GET',
         responseType: 'blob',
       }).then(response => {
