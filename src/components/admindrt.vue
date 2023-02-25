@@ -887,7 +887,8 @@ export default {
           sch_expensedate: expensedate,
           uniqueID: `${unique_ID}${year}${month}${date}${hours}${minutes}${seconds}${mmseconds}`,
           drtid: row.Drt_id,
-          drtamount: row.Drt_amount
+          drtamount: row.Drt_amount,
+          billNo:row.Bill_no
         })
         .then(response => {
           this.isLoading = false;
