@@ -81,8 +81,8 @@
                   <td class="text-xs-left">{{ props.item.PATIENT_NAME }}</td>
                   <td class="text-xs-left">{{ numberformat(props.item.Bill_TOTAL_AMOUNT) }}</td>
                   <td class="text-xs-left">{{ props.item.status }}</td>
-                  <td class="text-xs-right" v-if="props.item.Bill_TOTAL_AMOUNT>0 && props.item.Bill_DISCOUNT_AMOUNT==0 ">
-
+                  <!--<td class="text-xs-right" v-if="props.item.Bill_TOTAL_AMOUNT>0 && props.item.Bill_DISCOUNT_AMOUNT==0 ">-->
+                  <td class="text-xs-right" v-if="props.item.Bill_TOTAL_AMOUNT>0">
                     <v-layout row justify-center>
                       <v-dialog v-model="dialog"  persistent max-width="800px" lazy absolute>
                         <v-btn slot="activator" small fab color="success" @click="rowClick1(props.item)">
@@ -222,7 +222,7 @@
   </v-layout>
 
   </td>
-  <td  class="text-xs-right" v-else-if=" props.item.Bill_DISCOUNT_AMOUNT>0"> Discounted Bill</td>
+  <td  class="text-xs-right" v-else-if=" props.item.Bill_DISCOUNT_AMOUNT<0"> Discounted Bill</td>
   <td  class="text-xs-right" v-else-if=" props.item.Bill_TOTAL_AMOUNT<0"> Cancelled</td>
  
 </tr>
