@@ -880,12 +880,16 @@ export default {
           token: `${process.env.API_KEY}`
         }
       };
+      console.log('eeeeeeeeeeeeeeeeeeeeeeeee');
+      console.log((process.env.API_URL));
+
       this.$http
         .post(`${process.env.API_URL}/api-finbillinsert`, {
           sch_bill_id: row.id,
           sch_id: normalusername.name,
           sch_expensedate: expensedate,
-          uniqueID: `${unique_ID}${year}${month}${date}${hours}${minutes}${seconds}${mmseconds}`,
+        //  uniqueID: `${unique_ID}${year}${month}${date}${hours}${minutes}${seconds}${mmseconds}`,
+          uniqueID: unique_ID,
           drtid: row.Drt_id,
           drtamount: row.Drt_amount,
           billNo:row.Bill_no
