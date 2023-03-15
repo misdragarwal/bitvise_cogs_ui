@@ -5305,6 +5305,8 @@ export default {
 	mumbai_branches:null,
 	rest_of_maharashtra:null,
 	rest_of_maharashtra_branches:null,
+  Punjab: null,
+    Punjab_branches: null,
     telangana: null,
     hyderabad: null,
     hyderabad_branches: null,
@@ -5448,6 +5450,8 @@ export default {
       this.mumbai_branches = data.branchwise["Mumbai"];
 	  this.rest_of_maharashtra = [data.ahcgroup["Rest of Maharashtra"]];
       this.rest_of_maharashtra_branches = data.branchwise["Rest of Maharashtra"];	  
+      this.Punjab = [data.ahcgroup["Punjab"]];
+      this.Punjab_branches = data.branchwise["Punjab"];
       this.telangana = [data.ahcgroup["Telangana"]];
       this.hyderabad = [data.ahcgroup["Hyderabad"]];
       this.hyderabad_branches = data.branchwise["Hyderabad"];
@@ -5525,6 +5529,8 @@ export default {
 			  this.mumbai_branches,
 			  this.rest_of_maharashtra,
 			  this.rest_of_maharashtra_branches,
+        this.Punjab,
+			  this.Punjab_branches,
 			  this.telangana,
 			  this.hyderabad,
 			  this.hyderabad_branches,
