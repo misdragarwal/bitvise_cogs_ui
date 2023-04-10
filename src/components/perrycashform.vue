@@ -257,14 +257,14 @@ export default {
           this.submitvalid=true;
         return false;
       }
-      if ((this.fileVoucher.size > 1000000)) {
-        alert("Voucher file is greater than 1MB");
+      if ((this.fileVoucher.size >= 450000)) {
+        alert("Voucher file is greater than 450 KB");
           this.submitvalid=true;
         return false;
       }
       if (this.fileBill != null) {
-        if ((this.fileBill.size > 1000000)) {
-          alert("Bill file is greater than 1MB");
+        if ((this.fileBill.size >= 450000)) {
+          alert("Bill file is greater than 450 KB");
             this.submitvalid=true;
           return false;
         }
@@ -319,8 +319,10 @@ export default {
 	  handleFileUploadVoucher(){
 		this.fileVoucher = this.$refs.voucherupload.files[0];	
     console.log(		this.fileVoucher );
-		if ((this.fileVoucher.size > 1000000)) {		    
-			 //alert("Voucher file is greater than 1MB");
+		if ((this.fileVoucher.size >= 450000)) {		    
+			 alert("Voucher file is greater than 450 KB");
+       this.$refs.voucherupload.value = null;
+       this.fileVoucher = null;
 			 return false;
 		
 		}
@@ -328,8 +330,10 @@ export default {
 	  handleFileUploadBill(){
 		this.fileBill = this.$refs.billupload.files[0];	
     console.log(this.fileBill);
-		if ((this.fileBill.size > 1000000)) {		    
-			 //alert("Bill file is greater than 1MB");
+		if ((this.fileBill.size >= 450000)) {		    
+			 alert("Bill file is greater than 450 KB");
+       this.$refs.billupload.value = null;
+       this.fileBill = null;
 			 return false;
 		
 		}
