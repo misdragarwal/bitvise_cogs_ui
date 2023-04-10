@@ -476,12 +476,14 @@ export default {
     handleFileUploadagreement() {
       this.fileagreementupload = this.$refs.agreementupload.files[0];
       console.log(this.fileagreementupload);
-      console.log((this.fileagreementupload.size / 1024 / 1024).toFixed(2));
-      if ((this.fileagreementupload.size / 1024 / 1024).toFixed(2) > 1.5) {
-        alert("Agreement file is greater than 1MB");
-
+      // console.log((this.fileagreementupload.size / 1024 / 1024).toFixed(2));
+      // if ((this.fileagreementupload.size / 1024 / 1024).toFixed(2) > 1.5) {
+        if (this.fileagreementupload.size >= 450000) {
+      //  alert("Agreement file is greater than 1 MB");
+        alert("Agreement file is greater than 450 KB");
+        this.$refs.agreementupload.value = null;
         this.fileagreementupload = "";
-        console.log((this.$refs.agreementupload.files = null));
+        // console.log((this.$refs.agreementupload.files = null));
         // this.$refs.agreementupload.files[0]='';
 
         console.log(this.fileagreementupload);
@@ -490,10 +492,12 @@ export default {
     handleFileUploadpan() {
       this.filepanupload = this.$refs.panupload.files[0];
       console.log(this.filepanupload);
-      console.log((this.filepanupload.size / 1024 / 1024).toFixed(2));
-      if ((this.filepanupload.size / 1024 / 1024).toFixed(2) > 1.5) {
-        alert("Pan file is greater than 1MB");
-
+      // console.log((this.filepanupload.size / 1024 / 1024).toFixed(2));
+     // if ((this.filepanupload.size / 1024 / 1024).toFixed(2) > 1.5) {
+      if (this.filepanupload.size >= 450000) {
+     //   alert("Pan file is greater than 1 MB");
+     alert("Pan file is greater than 450 KB");
+        this.$refs.panupload.value = null;
         this.filepanupload = "";
         console.log(this.filepanupload);
       }
@@ -501,10 +505,12 @@ export default {
     handleFileUploadpassbook() {
       this.filepassbookupload = this.$refs.passbookupload.files[0];
       console.log(this.filepassbookupload);
-      console.log((this.filepassbookupload.size / 1024 / 1024).toFixed(2));
-      if ((this.filepassbookupload.size / 1024 / 1024).toFixed(2) > 1.5) {
-        alert("Passbook file is greater than 1MB");
-
+      // console.log((this.filepassbookupload.size / 1024 / 1024).toFixed(2));
+      // if ((this.filepassbookupload.size / 1024 / 1024).toFixed(2) > 1.5) {
+       if (this.filepassbookupload.size >= 450000) {
+      //  alert("Passbook file is greater than 1 MB");
+      alert("Passbook file is greater than 450 KB");
+      this.$refs.passbookupload.value = null;
         this.filepassbookupload = null;
         console.log(this.filepassbookupload);
       }
