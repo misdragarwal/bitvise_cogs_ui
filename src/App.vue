@@ -497,7 +497,12 @@ export default {
           this.tabItems = ["TPA"];
         } else if (this.userId == "103572") {
           this.tabItems = ["Petty Cash"];
+        } else if (this.userId == "110044") {
+          this.tabItems = ["Petty Cash"];
+        } else if (this.userId == "109805") {
+          this.tabItems = ["Petty Cash"];
         }
+
         //ch user Menu addition
         else {
           this.tabItems = [
@@ -534,6 +539,9 @@ export default {
           ];
         } else if (this.userId == "103260") {
           this.tabItems = ["pettycashApproval", "Coll_Deposit_View"];
+        } else if (this.userId == "106739") {
+          this.tabItems = ["pettycashApproval"];
+          
         } else {
           this.tabItems = [
             "Domestic",
