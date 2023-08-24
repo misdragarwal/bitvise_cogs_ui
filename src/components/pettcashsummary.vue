@@ -220,6 +220,7 @@ export default {
           "entity": "entity",
           "branch": "branch",
           "CODE": "CODE",
+          "gl code": "gl_code",
           "category name": "category_name Welfare",
           "ledger head": "ledger_head",
           "voucher no": "voucher_no",
