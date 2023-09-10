@@ -89,7 +89,7 @@
               </td>
 
 
-              <td class="text-xs-right" v-if="(props.item.status===0 )">
+              <td class="text-xs-right" v-if="(props.item.status===1 || props.item.status===0 )">
                 <v-btn slot="activator" small fab @click.stop="$set(dialogcancel, props.item.voucher_no, true)" color="red">
                   <v-icon>fas fa-times</v-icon>
                 </v-btn>
