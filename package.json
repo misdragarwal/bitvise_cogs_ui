@@ -9,7 +9,6 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "prod": "webpack-dev-server --inline --progress --config build/webpack.prod.conf.js"
-  
   },
   "dependencies": {
     "away": "1.0.0",

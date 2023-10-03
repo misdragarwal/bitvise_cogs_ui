@@ -322,7 +322,8 @@ export default {
             "StockLedger",
             "IWSR",
             "StockExpiry",
-            "BatchwiseStock"
+            "BatchwiseStock",
+            "Cogs Vs Revn"
           ];
         } else if (this.userId == 102055) {
           this.tabItems = ["AVA-Magic50", "NewOPD", "SnapshotRevenue"];
