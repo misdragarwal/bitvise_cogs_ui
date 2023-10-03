@@ -559,13 +559,17 @@ export default {
       //finance Menu addition
       else if (this.userType == "financeuser") {
         if (
-          this.userId == "finpc" ||
-          this.userId == "orbfinpc1" ||
-          this.userId == "orbfinpc2"
-        ) {
+          this.userId == "finpc" ) {
           this.tabItems = ["Cashapproval"];
         } else if (this.userId == "reconadmin") {
-          this.tabItems = ["Coll_Deposits"];
+          this.tabItems = ["Coll_Deposits"]; 
+        } else if (
+          this.userId == "orbfinpc1" ||
+          this.userId ==  "orbfinpc2"
+          ) {
+          this.tabItems = [
+              "Cashapproval",
+              "Coll_Deposits" ];
         } else if (this.userId === "108477") {
           this.tabItems = ["competitor"];
         } else {
