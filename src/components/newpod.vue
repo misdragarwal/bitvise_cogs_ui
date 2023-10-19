@@ -130,27 +130,27 @@
                     class="text-xs-center"
                     scope="col"
                     
+                  >FY24 MTD</th>
+				  <th
+                    class="text-xs-center"
+                    scope="col"
+                    
+                  >FY23 MTD</th>
+				  <th
+                    class="text-xs-center"
+                    scope="col"
+                    
+                  >FY24-v-FY23 MTD Gr.%</th>
+				   <th
+                    class="text-xs-center"
+                    scope="col"
+                    
                   >FY22 MTD</th>
 				  <th
                     class="text-xs-center"
                     scope="col"
                     
-                  >FY21 MTD</th>
-				  <th
-                    class="text-xs-center"
-                    scope="col"
-                    
-                  >FY22-v-FY21 MTD Gr.%</th>
-				   <th
-                    class="text-xs-center"
-                    scope="col"
-                    
-                  >FY20 MTD</th>
-				  <th
-                    class="text-xs-center"
-                    scope="col"
-                    
-                  >FY22-v-FY20 MTD Gr.%</th>
+                  >FY24-v-FY22 MTD Gr.%</th>
                 </tr>
                
               </thead>
