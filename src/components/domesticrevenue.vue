@@ -2482,7 +2482,7 @@
                   scope="row"
                   v-for="(item,index) in Punjab"
                   :key="index+item.branch"
-                  class="font-weight-black rotgrp"
+                  class="font-weight-black branchesgrp"
                 >
                   <td
                     scope="row"
@@ -2578,15 +2578,11 @@
                   
                 </tr>
 
-
-
-
-
                 <tr
                   scope="row"
                   v-for="(item,index) in Jammu"
                   :key="index+item.branch"
-                  class="font-weight-black rotgrp"
+                  class="font-weight-black branchesgrp"
                 >
                   <td
                     scope="row"
@@ -2681,16 +2677,6 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				
                 <tr
                   scope="row"
@@ -2844,7 +2830,7 @@
                   scope="row"
                   v-for="(item,index) in andhra"
                   :key="index+item.branch"
-                  class="font-weight-black rotgrp"
+                  class="font-weight-black branchesgrp"
                 >
                   <td
                     scope="row"
@@ -2993,7 +2979,7 @@
                   scope="row"
                   v-for="(item,index) in kerla"
                   :key="index+item.branch"
-                  class="font-weight-black rotgrp"
+                  class="font-weight-black branchesgrp"
                 >
                   <td
                     scope="row"
@@ -3187,7 +3173,106 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
-				
+                <tr
+                  scope="row"
+                  v-for="(item,index) in gujarat"
+                  :key="index+item.branch"
+                  class="font-weight-black branchesgrp"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
+                <tr
+                  scope="row"
+                  v-for="(item,index) in gujarat_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
+
                 <tr
                   scope="row"
                   v-for="(item,index) in ahmedabad"
@@ -3242,7 +3327,7 @@
                   scope="row"
                   v-for="(item,index) in madhyapradesh"
                   :key="index+item.branch"
-                  class="font-weight-black rotgrp"
+                  class="font-weight-black branchesgrp"
                 >
                   <td
                     scope="row"
@@ -3341,7 +3426,7 @@
                   scope="row"
                   v-for="(item,index) in odisha"
                   :key="index+item.branch"
-                  class="font-weight-black rotgrp"
+                  class="font-weight-black branchesgrp"
                 >
                   <td
                     scope="row"
@@ -3554,6 +3639,8 @@ export default {
     kerla_branches: null,
     kolk: null,
     kolk_branches: null,   
+    gujarat: null,
+    gujarat_branches: null,   
     ahmedabad: null,
     madhyapradesh :null,
 	madhyapradesh_branches :null,
@@ -3672,6 +3759,8 @@ export default {
       this.kerla_branches = data.branchwise["Kerala"];
       this.kolk = [data.ahcgroup["Kolkata"]];
       this.kolk_branches = data.branchwise["Kolkata"];      
+      this.gujarat = [data.ahcgroup["Gujarat"]];
+      this.gujarat_branches = data.branchwise["Gujarat"];      
       this.ahmedabad = data.branchwise["Ahmedabad"];
       this.madhyapradesh = [data.ahcgroup["Madhya Pradesh"]];
       this.madhyapradesh_branches = data.branchwise["Madhya Pradesh"];
@@ -3744,6 +3833,8 @@ export default {
 		      this.kerla_branches,
 			  this.kolk,
 			  this.kolk_branches,
+        this.gujarat,
+			  this.gujarat_branches,
 			  this.ahmedabad,
 			  this.madhyapradesh,
 			  this.madhyapradesh_branches,
