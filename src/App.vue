@@ -119,6 +119,7 @@ import pettycash_ch_list from "./components/pettycash_ch_list";
 import pettycashApproval from "./components/schpettycash.vue";
 import Cashapproval from "./components/adminpettycash.vue";
 import Cogsdata from "./components/cogsdata.vue";
+import Crmapp from "./components/crmapp.vue";
 import Tpa from "./components/tpabillch.vue";
 import Tpa_Approve from "./components/tpabillapprove.vue";
 import stock_ledger from "./components/stock-ledger.vue";
@@ -201,6 +202,7 @@ export default {
     pettycashApproval,
     Cashapproval,
     Cogsdata,
+    Crmapp,
     Tpa,
     Tpa_Approve,
     stock_ledger,
@@ -324,9 +326,11 @@ export default {
             "StockExpiry",
             "BatchwiseStock",
             "Cogs Vs Revn",
-            "NewOPD"
+            "NewOPD",
+            "CRMAppointment"
           ];
-        } else if (this.userId == 102055) {
+        } 
+        else if (this.userId == 102055) {
           this.tabItems = ["AVA-Magic50", "NewOPD", "SnapshotRevenue"];
         } else if (this.userId == 104860) {
           this.tabItems = [
@@ -541,7 +545,19 @@ export default {
           ];
         } else if (this.userId == "103260") {
           this.tabItems = ["pettycashApproval", "Coll_Deposit_View"];
-        } else if (this.userId == "106739") {
+         } else if (this.userId == "109802") {
+          this.tabItems = [
+            "Domestic",
+            "Cogs Vs Revn",
+            "NewOPD",
+            "DRTApproval",
+            "pettycashApproval",
+            "Coll_Deposit_View",
+            "compApproval",
+            "CRMAppointment"
+          ];
+        }
+         else if (this.userId == "106739") {
           this.tabItems = ["pettycashApproval"];
           
         } else {
@@ -557,6 +573,7 @@ export default {
           ];
         }
       }
+   
       //finance Menu addition
       else if (this.userType == "financeuser") {
         if (
@@ -758,6 +775,9 @@ export default {
 
       if (item === "Cogsdata") {
         serverBus.$emit("changeComponent", "Cogsdata");
+      }
+      if (item === "CRMAppointment") {
+        serverBus.$emit("changeComponent", "Crmapp");
       }
       if (item === "IWSR") {
         serverBus.$emit("changeComponent", "iwsr");
