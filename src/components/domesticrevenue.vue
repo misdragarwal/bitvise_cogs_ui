@@ -634,6 +634,56 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
+
+                <tr
+                  scope="row"
+                  v-for="(item,index) in sss"
+                  :key="index+item.branch"
+                  class="font-weight-black allindiagroup"
+                >
+                  <td
+                    scope="row"
+                    :class="text-xs-left"
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
 				
 				
 				
@@ -3685,8 +3735,8 @@ export default {
         this.loading = true;
         this.isLoading = true;
         this.$http
-          .get(`https://mis.dragarwal.com/mis-revenue-domestic/${date}`)
-          //.get(`http://localhost:7777/mis-revenue-domestic/${date}`)
+          //.get(`https://mis.dragarwal.com/mis-revenue-domestic/${date}`)
+          .get(`http://localhost:7777/mis-revenue-domestic/${date}`)
                     .then(response => {
             this.processDataDomesticRevenue(response.data);
             this.isLoading = false;
@@ -3706,6 +3756,7 @@ export default {
 	  this.ahcold = [data.ahcold];
 	  this.ahcnew = [data.ahcnew];
 	  this.tn = [data.tn];
+    this.sss = [data.sss];
 	  this.ahcnewhcount = this.ahcnew[0].hcount;
       this.cmh = data.branchwise["Chennai Main Hospital"];
       this.aeh_chennai = [data.aehgroup["Chennai Branches"]];
@@ -3783,6 +3834,7 @@ export default {
 			  this.ahcold,
 			   this.ahcnew,
 			    this.tn,
+          this.sss,
 			  this.cmh,
 			  this.aeh_chennai,
 			  this.aeh_chennai_branches,
