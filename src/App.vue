@@ -326,8 +326,7 @@ export default {
             "StockExpiry",
             "BatchwiseStock",
             "Cogs Vs Revn",
-            "NewOPD",
-            "CRMAppointment"
+            "NewOPD"
           ];
         } 
         else if (this.userId == 102055) {
