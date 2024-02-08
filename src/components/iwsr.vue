@@ -125,6 +125,10 @@ export default {
         shortCode: 'PM-AEH',
         text: 'PM-AEH'
       },
+      {
+        shortCode: 'PM-AHC',
+        text: 'PM-AHC'
+      },
     ],
     branch: [{
         shortCode: 'Select All',
