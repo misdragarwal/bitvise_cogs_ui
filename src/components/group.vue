@@ -4569,8 +4569,56 @@
                     scope="row"
                     class="text-xs-center"
                   >{{item.mtdachived}}</td>
-                  
-                </tr>
+          </tr>
+        				<tr
+                  scope="row"
+                  v-for="(item,index) in tanzania_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				 <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+				</tr>        
 				
 				
               </tbody>	  
@@ -5288,6 +5336,55 @@
                     class="text-xs-center"
                   >{{item.mtdachived}}</td>
                 </tr>
+          				<tr
+                  scope="row"
+                  v-for="(item,index) in tanzania_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				 <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+				</tr>
               </tbody>		  
 			  
             </table>
@@ -5432,6 +5529,7 @@ export default {
   kenya_branches: null,
 	uganda: null,
 	tanzania: null,
+  tanzania_branches: null,
     json_data: null,
     json_meta: [
       {
@@ -5469,8 +5567,8 @@ export default {
         this.loading = true;
         this.isLoading = true;
         this.$http
-          .get(`https://mis.dragarwal.com/mis-revenue-overseas/${date}`)
-          //.get(`http://localhost:7777/mis-revenue-overseas/${date}`)
+          //.get(`https://mis.dragarwal.com/mis-revenue-overseas/${date}`)
+          .get(`http://localhost:7777/mis-revenue-overseas/${date}`)
                     .then(response => {
             this.processDataGroupRevenue(response.data);
             this.isLoading = false;
@@ -5581,6 +5679,8 @@ export default {
 	  this.kenya_branches = data.branchwise["Kenya"];
     	  this.uganda = data.branchwise["Uganda"];
 	  this.tanzania = data.branchwise["Tanzania"];
+    this.tanzania = [data.ohcgroup["Tanzania"]];
+	  this.tanzania_branches = data.branchwise["Tanzania"];
       this.show = true;
     },
     downloadExcelRevenueSuper () {
@@ -5661,7 +5761,9 @@ export default {
 			  this.kenya,
         this.kenya_branches,
 			  this.uganda,
-			  this.tanzania
+			  this.tanzania,
+        this.tanzania_branches
+        
 			  // this.amb
 			);
 			return tempDataArr;
@@ -5677,14 +5779,15 @@ export default {
 			  this.mozambique,
 			  this.mozambique_branches,			 
 			  this.rwanda,
-			  this.rwanda,
+			  this.rwanda_branches,
 			  this.mauritius_branches,
 			  this.mauritius_branches,
 			  this.zambia,
 			  this.ghana,
 			  this.kenya,
 			  this.uganda,
-			  this.tanzania
+			  this.tanzania,
+        this.tanzania_branches
 			  // this.amb
 			);
 			return tempDataArr;
