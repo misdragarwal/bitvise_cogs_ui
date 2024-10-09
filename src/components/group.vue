@@ -5788,8 +5788,8 @@ export default {
         this.loading = true;
         this.isLoading = true;
         this.$http
-          //.get(`https://mis.dragarwal.com/mis-revenue-overseas/${date}`)
-          .get(`http://localhost:7777/mis-revenue-overseas/${date}`)
+          .get(`https://mis.dragarwal.com/mis-revenue-overseas/${date}`)
+          //.get(`http://localhost:7777/mis-revenue-overseas/${date}`)
                     .then(response => {
             this.processDataGroupRevenue(response.data);
             this.isLoading = false;

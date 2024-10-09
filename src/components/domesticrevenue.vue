@@ -3965,8 +3965,8 @@ export default {
         this.loading = true;
         this.isLoading = true;
         this.$http
-          //.get(`https://mis.dragarwal.com/mis-revenue-domestic/${date}`)
-           .get(`http://localhost:7777/mis-revenue-domestic/${date}`)
+          .get(`https://mis.dragarwal.com/mis-revenue-domestic/${date}`)
+          // .get(`http://localhost:7777/mis-revenue-domestic/${date}`)
                     .then(response => {
             this.processDataDomesticRevenue(response.data);
             this.isLoading = false;
