@@ -2778,6 +2778,8 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
+
+                <!-- 
                 <tr
                   scope="row"
                   v-for="(item,index) in Punjab_branches"
@@ -2828,6 +2830,221 @@
                   >{{item.mtdachived}}</td>
                   
                 </tr>
+            -->
+
+<tr
+                  scope="row"
+                  v-for="(item,index) in tecl"
+                  :key="index+item.branch"
+                  class="font-weight-black branchesgrp"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
+                <tr
+                  scope="row"
+                  v-for="(item,index) in tecl_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
+				
+				
+				 <tr
+                  scope="row"
+                  v-for="(item,index) in rest_of_punjab"
+                  :key="index+item.branch"
+                  class="font-weight-black branchesgrp"
+                >
+                  <td
+                    scope="row"
+                    :class="changeColorOPDSuper(item)?'text-xs-left':'text-xs-left indigo--text font-weight-medium'"
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
+                <tr
+                  scope="row"
+                  v-for="(item,index) in rest_of_punjab_branches"
+                  :key="index+item.branch"
+                  class="grey lighten-4"
+                >
+                  <td
+                    scope="row"
+                    :class="'text-xs-left indigo--text font-weight-medium'"
+                    
+                    style="cursor:pointer"
+                  >{{item.branch}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.hcount}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.ftdopdrev}}</td>
+                  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrev}}</td>
+				   <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyear}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentage}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdrevlastyearpre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdopdpercentagepre}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.target}}</td>
+				  <td
+                    scope="row"
+                    class="text-xs-center"
+                  >{{item.mtdachived}}</td>
+                  
+                </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <tr
                   scope="row"
@@ -5494,6 +5711,10 @@ export default {
 	rest_of_maharashtra_branches:null,
   Punjab: null,
     Punjab_branches: null,
+    tecl:null,
+    tecl_branches:null,
+    rest_of_punjab:null,
+	  rest_of_punjab_branches:null,
     Jammu: null,
     Jammu_branches: null,
     telangana: null,
@@ -5644,6 +5865,10 @@ export default {
       this.rest_of_maharashtra_branches = data.branchwise["Rest of Maharashtra"];	  
       this.Punjab = [data.ahcgroup["Punjab"]];
       this.Punjab_branches = data.branchwise["Punjab"];
+      this.tecl = [data.ahcgroup["TECL"]];
+      this.tecl_branches = data.branchwise["TECL"];
+	    this.rest_of_punjab = [data.ahcgroup["Rest of Punjab"]];
+      this.rest_of_punjab_branches = data.branchwise["Rest of Punjab"];	  
       this.Jammu = [data.ahcgroup["Jammu"]];
       this.Jammu_branches = data.branchwise["Jammu"];
       this.telangana = [data.ahcgroup["Telangana"]];
@@ -5729,6 +5954,10 @@ export default {
 			  this.rest_of_maharashtra_branches,
         this.Punjab,
 			  this.Punjab_branches,
+        this.tecl,
+			  this.tecl_branches,
+			  this.rest_of_punjab,
+			  this.rest_of_punjab_branches,
         this.Jammu,
         this.Jammu_branches,
 			  this.telangana,
