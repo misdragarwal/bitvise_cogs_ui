@@ -119,7 +119,7 @@ import pettycash_ch_list from "./components/pettycash_ch_list";
 import pettycashApproval from "./components/schpettycash.vue";
 import Cashapproval from "./components/adminpettycash.vue";
 import Cogsdata from "./components/cogsdata.vue";
-import Crmapp from "./components/crmapp.vue";
+//import Crmapp from "./components/crmapp.vue"; 
 import Tpa from "./components/tpabillch.vue";
 import Tpa_Approve from "./components/tpabillapprove.vue";
 import stock_ledger from "./components/stock-ledger.vue";
@@ -202,7 +202,7 @@ export default {
     pettycashApproval,
     Cashapproval,
     Cogsdata,
-    Crmapp,
+    //Crmapp,
     Tpa,
     Tpa_Approve,
     stock_ledger,
@@ -776,7 +776,7 @@ export default {
         serverBus.$emit("changeComponent", "Cogsdata");
       }
       if (item === "CRMAppointment") {
-        serverBus.$emit("changeComponent", "Crmapp");
+        //serverBus.$emit("changeComponent", "Crmapp");
       }
       if (item === "IWSR") {
         serverBus.$emit("changeComponent", "iwsr");

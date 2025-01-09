@@ -315,7 +315,7 @@ export default {
         console.log(fromdate + todate);
         this.isLoading = true;
         this.axios
-          .get(`https://mis.dragarwal.com/api-crmapp/${this.fromdate}/${this.todate}`)
+          //.get(`https://mis.dragarwal.com/api-crmapp/${this.fromdate}/${this.todate}`)
           // .get(`http://localhost:8888/api-crmapp/${this.fromdate}/${this.todate}`)
 
           .then(response => {
