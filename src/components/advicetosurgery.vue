@@ -173,34 +173,34 @@ export default {
           token: `${process.env.API_KEY}`
         }
       };
-//      this.axios
-//        .post(
-//          `${process.env.API_URL}/api-advsurgery`,
-//          {
-//            advDate: date,
-//            advType: advice,
-//            advBranch: branch
-//          },
-//          requestOptions
-//        )
-//        .then(response => {
-//          this.isLoading = false;
-//          if (response.status == 200) {
-//            alert("Data Generated.. please Export the data")
-//            this.processDataAdvSur(response.data);
-//          } else {
-//            alert("Error in loading data...");
-//          }
-//
-//          var str = "_"
-//        this.fileDate = date;
-//        this.file = branch.concat(str,advice,str, this.fileDate)
-//      
-//
-//        this.fileName = `Advice_surgery_${this.file}.csv`;
-//
-//        });
-//    },
+     this.axios
+       .post(
+         `${process.env.API_URL}/api-advsurgery`,
+         {
+           advDate: date,
+           advType: advice,
+           advBranch: branch
+         },
+         requestOptions
+       )
+       .then(response => {
+         this.isLoading = false;
+         if (response.status == 200) {
+           alert("Data Generated.. please Export the data")
+           this.processDataAdvSur(response.data);
+         } else {
+           alert("Error in loading data...");
+         }
+
+         var str = "_"
+       this.fileDate = date;
+       this.file = branch.concat(str,advice,str, this.fileDate)
+     
+
+       this.fileName = `Advice_surgery_${this.file}.csv`;
+
+       });
+   },
     processDataAdvSur(data) {
       this.AdviceData = data.result["data"];
     },
