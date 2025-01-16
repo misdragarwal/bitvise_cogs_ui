@@ -484,7 +484,7 @@ export default {
             "DRT",
             "Petty Cash",
             "TPA",
-            "Adv_Surg",
+//            "Adv_Surg",
             "Coll_Deposit"
           ];
         } else if (this.userId == "103741") {
@@ -796,9 +796,9 @@ export default {
       if (item === "Coll_Deposit") {
         serverBus.$emit("changeComponent", "coll_recon");
       }
-      if (item === "Adv_Surg") {
-        serverBus.$emit("changeComponent", "adv_surgery");
-      }
+//      if (item === "Adv_Surg") {
+//        serverBus.$emit("changeComponent", "adv_surgery");
+//      }
       if (item === "Coll_Deposit_View") {
         serverBus.$emit("changeComponent", "coll_recon_sch");
       }
